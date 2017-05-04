@@ -1,3 +1,4 @@
 ### Project specific
 influxdb/data/
 postgres/
+traefik/log/

@@ -1,7 +1,16 @@
 version: "2"
 services:
+  traefik:
+    image: containous/traefik
+    ports:
+      - "80:80"
+      - "81:8080"
+    volumes:
+      - ./traefik/conf/traefik.toml:/etc/traefik/traefik.toml
+      - ./traefik/log:/var/log/traefik:z
+      - /var/run/docker.sock:/var/run/docker.sock
 
-  db:
+  influxdb:
     image: influxdb:1.2-alpine
     ports:
       - 8083:8083
@@ -10,13 +19,22 @@ services:
       - ./influxdb/conf/influxdb.conf:/etc/influxdb/influxdb.conf:z
       - ./influxdb/data:/var/lib/influxdb:z
     command: -config /etc/influxdb/influxdb.conf
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=influxdb"
+      - "traefik.port=8083"
+      - "traefik.frontend.rule=Host:influxdb.arig.local"
 
-  graf:
+  chronograf:
     image: chronograf:0.13.0
     ports:
       - 10000:10000
     volumes:
       - ./chronograf/conf/chronograf.conf:/etc/chronograf/chronograf.conf:z
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=chronograf"
+      - "traefik.frontend.rule=Host:chronograf.arig.local"
 
   pg:
     image: postgres:9.6-alpine
@@ -27,4 +45,13 @@ services:
       - DB_USER=postgres
       - DB_PASS=postgres
     volumes:
-      - ./postgres/data:/var/lib/postgresql
+      - ./postgres:/var/lib/postgresql
+
+  superviseur:
+    image: arig/robots-supervisor:dev
+    ports:
+      - 0:80
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=superviseur"
+      - "traefik.frontend.rule=Host:superviseur.arig.local"
