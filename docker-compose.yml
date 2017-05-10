@@ -25,6 +25,15 @@ services:
       - "traefik.port=8083"
       - "traefik.frontend.rule=Host:influxdb.arig.local"
 
+  grafana:
+    image: grafana/grafana:4.2.0
+    ports:
+      - 3000:3000
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=grafana"
+      - "traefik.frontend.rule=Host:grafana.arig.local"
+
   chronograf:
     image: chronograf:0.13.0
     ports:
