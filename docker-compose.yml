@@ -13,8 +13,8 @@ services:
   influxdb:
     image: influxdb:1.2-alpine
     ports:
-      - 8083:8083
-      - 8086:8086
+      - "8083:8083"
+      - "8086:8086"
     volumes:
       - ./influxdb/conf/influxdb.conf:/etc/influxdb/influxdb.conf:z
       - ./influxdb/data:/var/lib/influxdb:z
@@ -28,7 +28,7 @@ services:
   grafana:
     image: grafana/grafana:4.2.0
     ports:
-      - 3000:3000
+      - "3000:3000"
     labels:
       - "traefik.enable=true"
       - "traefik.backend=grafana"
@@ -37,7 +37,7 @@ services:
   chronograf:
     image: chronograf:0.13.0
     ports:
-      - 10000:10000
+      - "10000:10000"
     volumes:
       - ./chronograf/conf/chronograf.conf:/etc/chronograf/chronograf.conf:z
     labels:
@@ -48,7 +48,7 @@ services:
   pg:
     image: postgres:9.6-alpine
     ports:
-      - 5432:5432
+      - "5432:5432"
     environment:
       - DEBUG=true
       - DB_USER=postgres
@@ -59,8 +59,23 @@ services:
   superviseur:
     image: arig/robots-supervisor:dev
     ports:
-      - 0:80
+      - "0:80"
     labels:
       - "traefik.enable=true"
       - "traefik.backend=superviseur"
       - "traefik.frontend.rule=Host:superviseur.arig.local"
+
+  gitlab:
+    image: gitlab/gitlab-ce:latest
+    ports:
+      - "0:80"
+      - "22:22"
+    volumes:
+      - ./gitlab/etc:/etc/gitlab
+      - ./gitlab/opt:/var/opt/gitlab
+      - ./gitlab/log:/var/log/gitlab
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=gitlab"
+      - "traefik.port=80"
+      - "traefik.frontend.rule=Host:gitlab.arig.local"
