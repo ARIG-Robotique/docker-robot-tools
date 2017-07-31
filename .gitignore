@@ -2,4 +2,4 @@
 influxdb/data/
 postgres/
 traefik/log/
-gitlab/
+grafana/
