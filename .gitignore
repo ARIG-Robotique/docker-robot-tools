@@ -3,3 +3,8 @@ influxdb/data/
 postgres/
 traefik/log/
 grafana/
+*.tfstate*
+
+### Idea project files
+*.iml
+.idea/
