@@ -86,18 +86,30 @@ function checkBinaries {
     terraform version > /dev/null || logErrorAndExit "Terraform doit être installé" 3
     logInfo " * terraform : [${LGREEN}OK${RESTORE}]"
 
+		wait-port > /dev/null
+		[ $? -eq 127 ] && logErrorAndExit "wait-port doit être installé (https://github.com/dwmkerr/wait-port)" 4
+		logInfo " * wait-port : [${LGREEN}OK${RESTORE}]"
+
     logInfo "Version des binaires ..."
     logInfo " * Docker ..."
     docker version
     logInfo " * Docker compose ..."
     docker-compose version
     logInfo " * Terraform ..."
-    export TERRAFORM_BIN=$(which terraform)
     terraform version
 }
 
 function printUsage {
     logErrorAndExit " Usage: ./run.sh start|stop|destroy" 99
+}
+
+function waitPortsOpened {
+		logInfo "Wait all services are up to install infrastructure ..."
+		wait-port -t 20000 80
+		wait-port -t 20000 81
+		wait-port -t 20000 5432
+		wait-port -t 20000 8086
+		wait-port -t 20000 3000
 }
 
 # Corps du programme #
@@ -109,11 +121,16 @@ if [ "$1" == "start" ] ; then
     docker-compose pull
     docker-compose up -d
 
-    sleep 30
+		waitPortsOpened
 
     # Provision de l'infra terraform
     cd infrastructure
-    terraform apply
+    while ! terraform apply ; do
+			echo ""
+			logError "Failed to initiate infrastructure. Wait 5 seconds"
+			echo ""
+			sleep 5
+		done
     cd ..
 
 elif [ "$1" == "stop" ] ; then
