@@ -56,7 +56,7 @@
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "${DS_INFLUXDB-ROBOTS}",
+          "datasource": "influxdb-robots",
           "fill": 1,
           "height": "300",
           "id": 1,
@@ -170,7 +170,7 @@
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "${DS_INFLUXDB-ROBOTS}",
+          "datasource": "influxdb-robots",
           "fill": 1,
           "height": "300",
           "id": 2,
@@ -283,7 +283,7 @@
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "${DS_INFLUXDB-ROBOTS}",
+          "datasource": "influxdb-robots",
           "fill": 1,
           "height": "300",
           "id": 3,
@@ -392,7 +392,7 @@
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "${DS_INFLUXDB-ROBOTS}",
+          "datasource": "influxdb-robots",
           "fill": 1,
           "height": "300",
           "id": 4,
@@ -517,7 +517,7 @@
             "rgba(237, 129, 40, 0.89)",
             "rgba(50, 172, 45, 0.97)"
           ],
-          "datasource": "${DS_INFLUXDB-ROBOTS}",
+          "datasource": "influxdb-robots",
           "format": "none",
           "gauge": {
             "maxValue": 100,
@@ -586,7 +586,7 @@
                 {
                   "key": "robot",
                   "operator": "=",
-                  "value": "Nerell simulateur"
+                  "value": "/^$robot_name$/"
                 },
                 {
                   "condition": "AND",
@@ -619,7 +619,7 @@
             "rgba(237, 129, 40, 0.89)",
             "rgba(50, 172, 45, 0.97)"
           ],
-          "datasource": "${DS_INFLUXDB-ROBOTS}",
+          "datasource": "influxdb-robots",
           "format": "none",
           "gauge": {
             "maxValue": 100,
@@ -688,7 +688,7 @@
                 {
                   "key": "robot",
                   "operator": "=",
-                  "value": "Nerell simulateur"
+                  "value": "/^$robot_name$/"
                 },
                 {
                   "condition": "AND",
@@ -721,7 +721,7 @@
             "rgba(237, 129, 40, 0.89)",
             "rgba(50, 172, 45, 0.97)"
           ],
-          "datasource": "${DS_INFLUXDB-ROBOTS}",
+          "datasource": "influxdb-robots",
           "format": "none",
           "gauge": {
             "maxValue": 100,
@@ -790,7 +790,7 @@
                 {
                   "key": "robot",
                   "operator": "=",
-                  "value": "Nerell simulateur"
+                  "value": "/^$robot_name$/"
                 },
                 {
                   "condition": "AND",
@@ -823,7 +823,7 @@
             "rgba(237, 129, 40, 0.89)",
             "rgba(50, 172, 45, 0.97)"
           ],
-          "datasource": "${DS_INFLUXDB-ROBOTS}",
+          "datasource": "influxdb-robots",
           "format": "none",
           "gauge": {
             "maxValue": 100,
@@ -892,7 +892,7 @@
                 {
                   "key": "robot",
                   "operator": "=",
-                  "value": "Nerell simulateur"
+                  "value": "/^$robot_name$/"
                 },
                 {
                   "condition": "AND",
@@ -925,7 +925,7 @@
             "rgba(237, 129, 40, 0.89)",
             "rgba(50, 172, 45, 0.97)"
           ],
-          "datasource": "${DS_INFLUXDB-ROBOTS}",
+          "datasource": "influxdb-robots",
           "format": "none",
           "gauge": {
             "maxValue": 100,
@@ -994,7 +994,7 @@
                 {
                   "key": "robot",
                   "operator": "=",
-                  "value": "Nerell simulateur"
+                  "value": "/^$robot_name$/"
                 },
                 {
                   "condition": "AND",
@@ -1027,7 +1027,7 @@
             "rgba(237, 129, 40, 0.89)",
             "rgba(50, 172, 45, 0.97)"
           ],
-          "datasource": "${DS_INFLUXDB-ROBOTS}",
+          "datasource": "influxdb-robots",
           "format": "none",
           "gauge": {
             "maxValue": 100,
@@ -1096,7 +1096,7 @@
                 {
                   "key": "robot",
                   "operator": "=",
-                  "value": "Nerell simulateur"
+                  "value": "/^$robot_name$/"
                 },
                 {
                   "condition": "AND",
@@ -1125,7 +1125,7 @@
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "${DS_INFLUXDB-ROBOTS}",
+          "datasource": "influxdb-robots",
           "fill": 1,
           "height": "300",
           "id": 5,
@@ -1242,7 +1242,7 @@
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "${DS_INFLUXDB-ROBOTS}",
+          "datasource": "influxdb-robots",
           "fill": 1,
           "height": "300",
           "id": 6,
@@ -1371,7 +1371,7 @@
       {
         "allValue": null,
         "current": {},
-        "datasource": "${DS_INFLUXDB-ROBOTS}",
+        "datasource": "influxdb-robots",
         "hide": 0,
         "includeAll": false,
         "label": "Nom du robot",
