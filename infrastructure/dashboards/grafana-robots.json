@@ -99,7 +99,7 @@
                 [
                   {
                     "params": [
-                      "inputVitesse"
+                      "consigne"
                     ],
                     "type": "field"
                   }
@@ -213,7 +213,7 @@
                 [
                   {
                     "params": [
-                      "inputVitesse"
+                      "consigne"
                     ],
                     "type": "field"
                   }
@@ -322,7 +322,7 @@
                 [
                   {
                     "params": [
-                      "mesure"
+                      "input"
                     ],
                     "type": "field"
                   }
@@ -431,7 +431,7 @@
                 [
                   {
                     "params": [
-                      "mesure"
+                      "input"
                     ],
                     "type": "field"
                   }
@@ -455,7 +455,7 @@
                   "condition": "AND",
                   "key": "name",
                   "operator": "=",
-                  "value": "distance"
+                  "value": "orientation"
                 }
               ]
             }
@@ -463,7 +463,7 @@
           "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
-          "title": "Distance : Consigne, Deceleration",
+          "title": "Orientation : Consigne, Deceleration",
           "tooltip": {
             "shared": true,
             "sort": 0,
@@ -598,7 +598,7 @@
             }
           ],
           "thresholds": "",
-          "title": "Dist Kp",
+          "title": "Distance Kp",
           "type": "singlestat",
           "valueFontSize": "80%",
           "valueMaps": [
@@ -700,7 +700,7 @@
             }
           ],
           "thresholds": "",
-          "title": "Dist Ki",
+          "title": "Distance Ki",
           "type": "singlestat",
           "valueFontSize": "80%",
           "valueMaps": [
@@ -802,7 +802,7 @@
             }
           ],
           "thresholds": "",
-          "title": "Dist Kd",
+          "title": "Distance Kd",
           "type": "singlestat",
           "valueFontSize": "80%",
           "valueMaps": [
@@ -904,7 +904,7 @@
             }
           ],
           "thresholds": "",
-          "title": "Orien Kp",
+          "title": "Orientation Kp",
           "type": "singlestat",
           "valueFontSize": "80%",
           "valueMaps": [
@@ -1006,7 +1006,7 @@
             }
           ],
           "thresholds": "",
-          "title": "Orien Ki",
+          "title": "Orientation Ki",
           "type": "singlestat",
           "valueFontSize": "80%",
           "valueMaps": [
@@ -1108,7 +1108,7 @@
             }
           ],
           "thresholds": "",
-          "title": "Orien Kd",
+          "title": "Orientation Kd",
           "type": "singlestat",
           "valueFontSize": "80%",
           "valueMaps": [
@@ -1172,7 +1172,7 @@
                 [
                   {
                     "params": [
-                      "mesure"
+                      "input"
                     ],
                     "type": "field"
                   }
@@ -1289,7 +1289,7 @@
                 [
                   {
                     "params": [
-                      "mesure"
+                      "input"
                     ],
                     "type": "field"
                   }
