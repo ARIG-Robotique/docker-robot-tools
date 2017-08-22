@@ -585,7 +585,7 @@
               "tags": [
                 {
                   "key": "robot",
-                  "operator": "=",
+                  "operator": "=~",
                   "value": "/^$robot_name$/"
                 },
                 {
@@ -687,7 +687,7 @@
               "tags": [
                 {
                   "key": "robot",
-                  "operator": "=",
+                  "operator": "=~",
                   "value": "/^$robot_name$/"
                 },
                 {
@@ -789,7 +789,7 @@
               "tags": [
                 {
                   "key": "robot",
-                  "operator": "=",
+                  "operator": "=~",
                   "value": "/^$robot_name$/"
                 },
                 {
@@ -891,7 +891,7 @@
               "tags": [
                 {
                   "key": "robot",
-                  "operator": "=",
+                  "operator": "=~",
                   "value": "/^$robot_name$/"
                 },
                 {
@@ -993,7 +993,7 @@
               "tags": [
                 {
                   "key": "robot",
-                  "operator": "=",
+                  "operator": "=~",
                   "value": "/^$robot_name$/"
                 },
                 {
@@ -1095,7 +1095,7 @@
               "tags": [
                 {
                   "key": "robot",
-                  "operator": "=",
+                  "operator": "=~",
                   "value": "/^$robot_name$/"
                 },
                 {
@@ -1421,5 +1421,5 @@
   },
   "timezone": "browser",
   "title": "Robots",
-  "version": 1
+  "version": 3
 }
