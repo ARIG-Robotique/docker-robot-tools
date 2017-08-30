@@ -4,6 +4,7 @@ postgres/
 traefik/log/
 grafana/
 *.tfstate*
+infrastructure/.terraform/
 
 ### Idea project files
 *.iml

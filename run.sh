@@ -125,6 +125,10 @@ if [ "$1" == "start" ] ; then
 
     # Provision de l'infra terraform
     cd infrastructure
+
+		# Initialisation des plugins (provider) terraform
+		terraform init -upgrade
+
     while ! terraform apply ; do
 			echo ""
 			logError "Failed to initiate infrastructure. Wait 5 seconds"
