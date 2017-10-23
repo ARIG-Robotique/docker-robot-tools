@@ -1,7 +1,7 @@
 version: "2.1"
 services:
   traefik:
-    image: containous/traefik:v1.3.7
+    image: traefik:v1.4-alpine
     ports:
       - "80:80"
       - "81:8080"
@@ -51,7 +51,7 @@ services:
       - influxdb
 
   pg:
-    image: postgres:9.6-alpine
+    image: postgres:10-alpine
     ports:
       - "5432:5432"
     environment:
