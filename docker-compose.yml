@@ -1,7 +1,7 @@
 version: "2.1"
 services:
   traefik:
-    image: traefik:v1.4-alpine
+    image: traefik:1.4-alpine
     ports:
       - "80:80"
       - "81:8080"
@@ -37,7 +37,7 @@ services:
       - influxdb
 
   grafana:
-    image: grafana/grafana:4.5.2
+    image: grafana/grafana:latest
     ports:
       - "3000:3000"
     volumes:

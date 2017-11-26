@@ -36,23 +36,17 @@ variable "bddName" {
 ###############################
 
 provider "grafana" {
-  version = "~> 0.1"
-
   url = "http://${var.hosts["grafana"]}/"
   auth = "${var.users["admin_username"]}:${var.users["admin_password"]}"
 }
 
 provider "influxdb" {
-  version = "~> 0.1"
-
   url = "http://${var.hosts["influxdb"]}/"
   username = "${var.users["root_username"]}"
   password = "${var.users["root_password"]}"
 }
 
 provider "postgresql" {
-  version = "~> 0.1"
-
   host = "${var.hosts["postgres"]}"
   username = "${var.users["postgres_username"]}"
   password = "${var.users["postgres_password"]}"
@@ -99,6 +93,17 @@ resource "grafana_data_source" "influxdb_robots" {
   password = "${influxdb_user.arig.password}"
   database_name = "${influxdb_database.robots.name}"
   is_default = true
+  access_mode = "proxy"
+}
+
+resource "grafana_data_source" "pg_robots" {
+  type = "postgres"
+  name = "pg-robots"
+  url = "pg:5432"
+  username = "${postgresql_role.arig.name}"
+  password = "${postgresql_role.arig.password}"
+  database_name = "${postgresql_database.robots.name}"
+  is_default = false
   access_mode = "proxy"
 }
 
