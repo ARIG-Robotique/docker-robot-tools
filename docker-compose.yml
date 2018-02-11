@@ -51,7 +51,7 @@ services:
       - influxdb
 
   pg:
-    image: postgres:10-alpine
+    image: postgres:9-alpine
     ports:
       - "5432:5432"
     environment:
