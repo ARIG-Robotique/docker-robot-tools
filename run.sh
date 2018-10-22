@@ -151,15 +151,8 @@ elif [ "$1" == "destroy" ] ; then
     # Arret infra docker
     logInfo "Destruction docker ..."
     docker-compose down
-
-    # Nettoyage fichier
-    logInfo "Nettoyage fichiers ..."
-    sudo rm -vf infrastructure/*.tfstate*
-    sudo rm -Rvf traefik/log
-    sudo rm -Rvf influxdb/data
-    sudo rm -Rvf grafana
-    sudo rm -Rvf postgres
-
+		docker volume prune -f
+		docker network prune -f
 else
     printUsage
 fi

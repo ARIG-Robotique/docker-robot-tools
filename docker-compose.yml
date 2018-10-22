@@ -1,22 +1,27 @@
-version: "2.1"
+version: "3.3"
+
+volumes:
+  influx-data:
+  grafana-data:
+  pg-data:
+
 services:
   traefik:
-    image: traefik:1.5-alpine
+    image: traefik:1.7.2-alpine
     ports:
       - "80:80"
       - "81:8080"
     volumes:
-      - ./traefik/conf/traefik.toml:/etc/traefik/traefik.toml
-      - ./traefik/log:/var/log/traefik:z
+      - ./conf/traefik.toml:/etc/traefik/traefik.toml
       - /var/run/docker.sock:/var/run/docker.sock
 
   influxdb:
-    image: influxdb:1.4-alpine
+    image: influxdb:1.5-alpine
     ports:
       - "8086:8086"
     volumes:
-      - ./influxdb/conf/influxdb.conf:/etc/influxdb/influxdb.conf:z
-      - ./influxdb/data:/var/lib/influxdb:z
+      - ./conf/influxdb.conf:/etc/influxdb/influxdb.conf:z
+      - influx-data:/var/lib/influxdb:z
     command: -config /etc/influxdb/influxdb.conf
     labels:
       - "traefik.enable=true"
@@ -26,7 +31,7 @@ services:
       - traefik
 
   chronograf:
-    image: chronograf:1.4-alpine
+    image: chronograf:1.5-alpine
     ports:
       - "8888:8888"
     labels:
@@ -41,8 +46,7 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - ./grafana/lib:/var/lib/grafana
-      - ./grafana/var:/var/log/grafana
+      - grafana-data:/var/lib/grafana
     labels:
       - "traefik.enable=true"
       - "traefik.backend=grafana"
@@ -51,7 +55,7 @@ services:
       - influxdb
 
   pg:
-    image: postgres:9-alpine
+    image: postgres:10-alpine
     ports:
       - "5432:5432"
     environment:
@@ -59,7 +63,7 @@ services:
       - DB_USER=postgres
       - DB_PASS=postgres
     volumes:
-      - ./postgres:/var/lib/postgresql
+      - pg-data:/var/lib/postgresql
 
   superviseur:
     image: arig/robots-supervisor:dev
