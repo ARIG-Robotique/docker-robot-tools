@@ -7,7 +7,7 @@ volumes:
 
 services:
   traefik:
-    image: traefik:1.7.2-alpine
+    image: traefik:1.7-alpine
     ports:
       - "80:80"
       - "81:8080"
@@ -16,7 +16,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
 
   influxdb:
-    image: influxdb:1.5-alpine
+    image: influxdb:1.7-alpine
     ports:
       - "8086:8086"
     volumes:
@@ -31,7 +31,7 @@ services:
       - traefik
 
   chronograf:
-    image: chronograf:1.5-alpine
+    image: chronograf:1.7-alpine
     ports:
       - "8888:8888"
     labels:
@@ -42,7 +42,7 @@ services:
       - influxdb
 
   grafana:
-    image: grafana/grafana:latest
+    image: grafana/grafana:5.4.3
     ports:
       - "3000:3000"
     volumes:
@@ -55,7 +55,7 @@ services:
       - influxdb
 
   pg:
-    image: postgres:10-alpine
+    image: postgres:11-alpine
     ports:
       - "5432:5432"
     environment:
