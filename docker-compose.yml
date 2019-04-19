@@ -42,7 +42,7 @@ services:
       - influxdb
 
   grafana:
-    image: grafana/grafana:6.0.0
+    image: grafana/grafana:6.1.4
     ports:
       - "3000:3000"
     volumes:
@@ -65,6 +65,20 @@ services:
     volumes:
       - pg-data:/var/lib/postgresql
 
+  reader:
+    image: arig/robots-reader:build-CRUD
+    network_mode: host
+    ports:
+      - "0:4100"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=reader"
+      - "traefik.frontend.rule=Host:superviseur-new.arig.local;PathPrefixStrip:/api"
+    depends_on:
+      - pg
+      - grafana
+      - influxdb
+
   superviseur:
     image: arig/robots-supervisor:dev
     ports:
@@ -73,6 +87,14 @@ services:
       - "traefik.enable=true"
       - "traefik.backend=superviseur"
       - "traefik.frontend.rule=Host:superviseur.arig.local"
+
+  superviseur-new:
+    image: arig/robots-supervisor:build-upgrade-angular-6
+    ports:
+      - "0:80"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=superviseur-new"
+      - "traefik.frontend.rule=Host:superviseur-new.arig.local"
     depends_on:
-      - pg
-      - grafana
+      - reader

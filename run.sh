@@ -86,9 +86,9 @@ function checkBinaries {
     terraform version > /dev/null || logErrorAndExit "Terraform doit être installé" 3
     logInfo " * terraform : [${LGREEN}OK${RESTORE}]"
 
-		wait-port > /dev/null
-		[ $? -eq 127 ] && logErrorAndExit "wait-port doit être installé (https://github.com/dwmkerr/wait-port)" 4
-		logInfo " * wait-port : [${LGREEN}OK${RESTORE}]"
+    wait-port > /dev/null
+    [ $? -eq 127 ] && logErrorAndExit "wait-port doit être installé (https://github.com/dwmkerr/wait-port)" 4
+    logInfo " * wait-port : [${LGREEN}OK${RESTORE}]"
 
     logInfo "Version des binaires ..."
     logInfo " * Docker ..."
@@ -104,12 +104,12 @@ function printUsage {
 }
 
 function waitPortsOpened {
-		logInfo "Wait all services are up to install infrastructure ..."
-		wait-port -t 20000 80
-		wait-port -t 20000 81
-		wait-port -t 20000 5432
-		wait-port -t 20000 8086
-		wait-port -t 20000 3000
+    logInfo "Wait all services are up to install infrastructure ..."
+    wait-port -t 20000 80
+    wait-port -t 20000 81
+    wait-port -t 20000 5432
+    wait-port -t 20000 8086
+    wait-port -t 20000 3000
 }
 
 # Corps du programme #
@@ -121,20 +121,20 @@ if [ "$1" == "start" ] ; then
     docker-compose pull
     docker-compose up -d
 
-		waitPortsOpened
+	waitPortsOpened
 
     # Provision de l'infra terraform
     cd infrastructure
 
-		# Initialisation des plugins (provider) terraform
-		terraform init -upgrade
+    # Initialisation des plugins (provider) terraform
+    terraform init -upgrade
 
     while ! terraform apply -auto-approve ; do
-			echo ""
-			logError "Failed to initiate infrastructure. Wait 5 seconds"
-			echo ""
-			sleep 5
-		done
+        echo ""
+        logError "Failed to initiate infrastructure. Wait 5 seconds"
+        echo ""
+        sleep 5
+    done
     cd ..
 
 elif [ "$1" == "stop" ] ; then
@@ -146,13 +146,15 @@ elif [ "$1" == "destroy" ] ; then
     logInfo "Destruction terraform ..."
     cd infrastructure
     terraform destroy -force
+    rm -Rvf .terraform
+    rm -vf *.tfstate*
     cd ..
 
     # Arret infra docker
     logInfo "Destruction docker ..."
     docker-compose down
-		docker volume prune -f
-		docker network prune -f
+	docker volume prune -f
+	docker network prune -f
 else
     printUsage
 fi
