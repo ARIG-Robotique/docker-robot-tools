@@ -66,14 +66,13 @@ services:
       - pg-data:/var/lib/postgresql
 
   reader:
-    image: arig/robots-reader:build-CRUD
-    network_mode: host
+    image: arig/robots-reader:dev
     ports:
       - "0:4100"
     labels:
       - "traefik.enable=true"
       - "traefik.backend=reader"
-      - "traefik.frontend.rule=Host:superviseur-new.arig.local;PathPrefixStrip:/api"
+      - "traefik.frontend.rule=Host:superviseur.arig.local;PathPrefixStrip:/api"
     depends_on:
       - pg
       - grafana
@@ -85,16 +84,16 @@ services:
       - "0:80"
     labels:
       - "traefik.enable=true"
-      - "traefik.backend=superviseur"
+      - "traefik.backend=superviseur-new"
       - "traefik.frontend.rule=Host:superviseur.arig.local"
+    depends_on:
+      - reader
 
-  superviseur-new:
-    image: arig/robots-supervisor:build-upgrade-angular-6
+  superviseur-old:
+    image: arig/robots-supervisor:old
     ports:
       - "0:80"
     labels:
       - "traefik.enable=true"
-      - "traefik.backend=superviseur-new"
-      - "traefik.frontend.rule=Host:superviseur-new.arig.local"
-    depends_on:
-      - reader
+      - "traefik.backend=superviseur"
+      - "traefik.frontend.rule=Host:superviseur-old.arig.local"
