@@ -52,6 +52,10 @@ resource "grafana_data_source" "pg_robots" {
   access_mode = "proxy"
 }
 
-resource "grafana_dashboard" "robots" {
-  config_json = "${file("dashboards/grafana-robots.json")}"
+resource "grafana_dashboard" "asserv_propulsions" {
+  config_json = "${file("dashboards/grafana-asserv-propulsions.json")}"
+}
+
+resource "grafana_dashboard" "tasks" {
+  config_json = "${file("dashboards/grafana-tasks.json")}"
 }
