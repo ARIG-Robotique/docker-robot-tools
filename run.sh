@@ -116,6 +116,9 @@ function waitPortsOpened {
 ######################
 checkBinaries
 
+systemctl stop httpd
+systemctl stop postgresql-docker
+
 if [ "$1" == "start" ] ; then
     # Démarrage infra docker
     docker-compose pull

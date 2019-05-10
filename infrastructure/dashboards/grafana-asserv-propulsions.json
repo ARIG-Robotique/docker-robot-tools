@@ -678,13 +678,14 @@
       "height": "300",
       "id": 3,
       "legend": {
-        "avg": false,
+        "alignAsTable": true,
+        "avg": true,
         "current": false,
-        "max": false,
-        "min": false,
+        "max": true,
+        "min": true,
         "show": true,
         "total": false,
-        "values": false
+        "values": true
       },
       "lines": true,
       "linewidth": 1,
@@ -700,8 +701,16 @@
       "steppedLine": false,
       "targets": [
         {
+          "alias": "$col",
           "dsType": "influxdb",
-          "groupBy": [],
+          "groupBy": [
+            {
+              "params": [
+                "$interval"
+              ],
+              "type": "time"
+            }
+          ],
           "measurement": "ramp_vitesse",
           "orderByTime": "ASC",
           "policy": "default",
@@ -714,6 +723,16 @@
                   "input"
                 ],
                 "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              },
+              {
+                "params": [
+                  "input"
+                ],
+                "type": "alias"
               }
             ],
             [
@@ -722,6 +741,16 @@
                   "distanceDeceleration"
                 ],
                 "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              },
+              {
+                "params": [
+                  "distanceDecelaration"
+                ],
+                "type": "alias"
               }
             ]
           ],
@@ -820,8 +849,16 @@
       "steppedLine": false,
       "targets": [
         {
+          "alias": "$col",
           "dsType": "influxdb",
-          "groupBy": [],
+          "groupBy": [
+            {
+              "params": [
+                "$interval"
+              ],
+              "type": "time"
+            }
+          ],
           "measurement": "ramp_vitesse",
           "orderByTime": "ASC",
           "policy": "default",
@@ -834,6 +871,16 @@
                   "input"
                 ],
                 "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              },
+              {
+                "params": [
+                  "input"
+                ],
+                "type": "alias"
               }
             ],
             [
@@ -842,6 +889,16 @@
                   "distanceDeceleration"
                 ],
                 "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              },
+              {
+                "params": [
+                  "distanceOrientation"
+                ],
+                "type": "alias"
               }
             ]
           ],
@@ -902,7 +959,7 @@
       }
     },
     {
-      "collapsed": true,
+      "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -910,937 +967,9 @@
         "y": 35
       },
       "id": 18,
-      "panels": [
-        {
-          "cacheTimeout": null,
-          "colorBackground": false,
-          "colorValue": false,
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "datasource": "influxdb-robots",
-          "format": "none",
-          "gauge": {
-            "maxValue": 100,
-            "minValue": 0,
-            "show": false,
-            "thresholdLabels": false,
-            "thresholdMarkers": true
-          },
-          "gridPos": {
-            "h": 2,
-            "w": 4,
-            "x": 0,
-            "y": 3
-          },
-          "height": "30",
-          "id": 7,
-          "interval": null,
-          "links": [],
-          "mappingType": 1,
-          "mappingTypes": [
-            {
-              "name": "value to text",
-              "value": 1
-            },
-            {
-              "name": "range to text",
-              "value": 2
-            }
-          ],
-          "maxDataPoints": 100,
-          "nullPointMode": "connected",
-          "nullText": null,
-          "postfix": "",
-          "postfixFontSize": "50%",
-          "prefix": "",
-          "prefixFontSize": "50%",
-          "rangeMaps": [
-            {
-              "from": "null",
-              "text": "N/A",
-              "to": "null"
-            }
-          ],
-          "sparkline": {
-            "fillColor": "rgba(31, 118, 189, 0.18)",
-            "full": false,
-            "lineColor": "rgb(31, 120, 193)",
-            "show": false
-          },
-          "tableColumn": "",
-          "targets": [
-            {
-              "dsType": "influxdb",
-              "groupBy": [],
-              "measurement": "correcteur_pid",
-              "orderByTime": "ASC",
-              "policy": "default",
-              "refId": "A",
-              "resultFormat": "time_series",
-              "select": [
-                [
-                  {
-                    "params": [
-                      "kp"
-                    ],
-                    "type": "field"
-                  }
-                ]
-              ],
-              "tags": [
-                {
-                  "key": "robot",
-                  "operator": "=~",
-                  "value": "/^$robot_name$/"
-                },
-                {
-                  "condition": "AND",
-                  "key": "name",
-                  "operator": "=",
-                  "value": "distance"
-                }
-              ]
-            }
-          ],
-          "thresholds": "",
-          "title": "Distance Kp",
-          "type": "singlestat",
-          "valueFontSize": "80%",
-          "valueMaps": [
-            {
-              "op": "=",
-              "text": "N/A",
-              "value": "null"
-            }
-          ],
-          "valueName": "current"
-        },
-        {
-          "cacheTimeout": null,
-          "colorBackground": false,
-          "colorValue": false,
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "datasource": "influxdb-robots",
-          "format": "none",
-          "gauge": {
-            "maxValue": 100,
-            "minValue": 0,
-            "show": false,
-            "thresholdLabels": false,
-            "thresholdMarkers": true
-          },
-          "gridPos": {
-            "h": 2,
-            "w": 4,
-            "x": 4,
-            "y": 3
-          },
-          "height": "30",
-          "id": 8,
-          "interval": null,
-          "links": [],
-          "mappingType": 1,
-          "mappingTypes": [
-            {
-              "name": "value to text",
-              "value": 1
-            },
-            {
-              "name": "range to text",
-              "value": 2
-            }
-          ],
-          "maxDataPoints": 100,
-          "nullPointMode": "connected",
-          "nullText": null,
-          "postfix": "",
-          "postfixFontSize": "50%",
-          "prefix": "",
-          "prefixFontSize": "50%",
-          "rangeMaps": [
-            {
-              "from": "null",
-              "text": "N/A",
-              "to": "null"
-            }
-          ],
-          "sparkline": {
-            "fillColor": "rgba(31, 118, 189, 0.18)",
-            "full": false,
-            "lineColor": "rgb(31, 120, 193)",
-            "show": false
-          },
-          "tableColumn": "",
-          "targets": [
-            {
-              "dsType": "influxdb",
-              "groupBy": [],
-              "measurement": "correcteur_pid",
-              "orderByTime": "ASC",
-              "policy": "default",
-              "refId": "A",
-              "resultFormat": "time_series",
-              "select": [
-                [
-                  {
-                    "params": [
-                      "ki"
-                    ],
-                    "type": "field"
-                  }
-                ]
-              ],
-              "tags": [
-                {
-                  "key": "robot",
-                  "operator": "=~",
-                  "value": "/^$robot_name$/"
-                },
-                {
-                  "condition": "AND",
-                  "key": "name",
-                  "operator": "=",
-                  "value": "distance"
-                }
-              ]
-            }
-          ],
-          "thresholds": "",
-          "title": "Distance Ki",
-          "type": "singlestat",
-          "valueFontSize": "80%",
-          "valueMaps": [
-            {
-              "op": "=",
-              "text": "N/A",
-              "value": "null"
-            }
-          ],
-          "valueName": "current"
-        },
-        {
-          "cacheTimeout": null,
-          "colorBackground": false,
-          "colorValue": false,
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "datasource": "influxdb-robots",
-          "format": "none",
-          "gauge": {
-            "maxValue": 100,
-            "minValue": 0,
-            "show": false,
-            "thresholdLabels": false,
-            "thresholdMarkers": true
-          },
-          "gridPos": {
-            "h": 2,
-            "w": 4,
-            "x": 8,
-            "y": 3
-          },
-          "height": "30",
-          "id": 9,
-          "interval": null,
-          "links": [],
-          "mappingType": 1,
-          "mappingTypes": [
-            {
-              "name": "value to text",
-              "value": 1
-            },
-            {
-              "name": "range to text",
-              "value": 2
-            }
-          ],
-          "maxDataPoints": 100,
-          "nullPointMode": "connected",
-          "nullText": null,
-          "postfix": "",
-          "postfixFontSize": "50%",
-          "prefix": "",
-          "prefixFontSize": "50%",
-          "rangeMaps": [
-            {
-              "from": "null",
-              "text": "N/A",
-              "to": "null"
-            }
-          ],
-          "sparkline": {
-            "fillColor": "rgba(31, 118, 189, 0.18)",
-            "full": false,
-            "lineColor": "rgb(31, 120, 193)",
-            "show": false
-          },
-          "tableColumn": "",
-          "targets": [
-            {
-              "dsType": "influxdb",
-              "groupBy": [],
-              "measurement": "correcteur_pid",
-              "orderByTime": "ASC",
-              "policy": "default",
-              "refId": "A",
-              "resultFormat": "time_series",
-              "select": [
-                [
-                  {
-                    "params": [
-                      "kd"
-                    ],
-                    "type": "field"
-                  }
-                ]
-              ],
-              "tags": [
-                {
-                  "key": "robot",
-                  "operator": "=~",
-                  "value": "/^$robot_name$/"
-                },
-                {
-                  "condition": "AND",
-                  "key": "name",
-                  "operator": "=",
-                  "value": "distance"
-                }
-              ]
-            }
-          ],
-          "thresholds": "",
-          "title": "Distance Kd",
-          "type": "singlestat",
-          "valueFontSize": "80%",
-          "valueMaps": [
-            {
-              "op": "=",
-              "text": "N/A",
-              "value": "null"
-            }
-          ],
-          "valueName": "current"
-        },
-        {
-          "cacheTimeout": null,
-          "colorBackground": false,
-          "colorValue": false,
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "datasource": "influxdb-robots",
-          "format": "none",
-          "gauge": {
-            "maxValue": 100,
-            "minValue": 0,
-            "show": false,
-            "thresholdLabels": false,
-            "thresholdMarkers": true
-          },
-          "gridPos": {
-            "h": 2,
-            "w": 4,
-            "x": 12,
-            "y": 3
-          },
-          "height": "30",
-          "id": 10,
-          "interval": null,
-          "links": [],
-          "mappingType": 1,
-          "mappingTypes": [
-            {
-              "name": "value to text",
-              "value": 1
-            },
-            {
-              "name": "range to text",
-              "value": 2
-            }
-          ],
-          "maxDataPoints": 100,
-          "nullPointMode": "connected",
-          "nullText": null,
-          "postfix": "",
-          "postfixFontSize": "50%",
-          "prefix": "",
-          "prefixFontSize": "50%",
-          "rangeMaps": [
-            {
-              "from": "null",
-              "text": "N/A",
-              "to": "null"
-            }
-          ],
-          "sparkline": {
-            "fillColor": "rgba(31, 118, 189, 0.18)",
-            "full": false,
-            "lineColor": "rgb(31, 120, 193)",
-            "show": false
-          },
-          "tableColumn": "",
-          "targets": [
-            {
-              "dsType": "influxdb",
-              "groupBy": [],
-              "measurement": "correcteur_pid",
-              "orderByTime": "ASC",
-              "policy": "default",
-              "refId": "A",
-              "resultFormat": "time_series",
-              "select": [
-                [
-                  {
-                    "params": [
-                      "kp"
-                    ],
-                    "type": "field"
-                  }
-                ]
-              ],
-              "tags": [
-                {
-                  "key": "robot",
-                  "operator": "=~",
-                  "value": "/^$robot_name$/"
-                },
-                {
-                  "condition": "AND",
-                  "key": "name",
-                  "operator": "=",
-                  "value": "orientation"
-                }
-              ]
-            }
-          ],
-          "thresholds": "",
-          "title": "Orientation Kp",
-          "type": "singlestat",
-          "valueFontSize": "80%",
-          "valueMaps": [
-            {
-              "op": "=",
-              "text": "N/A",
-              "value": "null"
-            }
-          ],
-          "valueName": "current"
-        },
-        {
-          "cacheTimeout": null,
-          "colorBackground": false,
-          "colorValue": false,
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "datasource": "influxdb-robots",
-          "format": "none",
-          "gauge": {
-            "maxValue": 100,
-            "minValue": 0,
-            "show": false,
-            "thresholdLabels": false,
-            "thresholdMarkers": true
-          },
-          "gridPos": {
-            "h": 2,
-            "w": 4,
-            "x": 16,
-            "y": 3
-          },
-          "height": "30",
-          "id": 11,
-          "interval": null,
-          "links": [],
-          "mappingType": 1,
-          "mappingTypes": [
-            {
-              "name": "value to text",
-              "value": 1
-            },
-            {
-              "name": "range to text",
-              "value": 2
-            }
-          ],
-          "maxDataPoints": 100,
-          "nullPointMode": "connected",
-          "nullText": null,
-          "postfix": "",
-          "postfixFontSize": "50%",
-          "prefix": "",
-          "prefixFontSize": "50%",
-          "rangeMaps": [
-            {
-              "from": "null",
-              "text": "N/A",
-              "to": "null"
-            }
-          ],
-          "sparkline": {
-            "fillColor": "rgba(31, 118, 189, 0.18)",
-            "full": false,
-            "lineColor": "rgb(31, 120, 193)",
-            "show": false
-          },
-          "tableColumn": "",
-          "targets": [
-            {
-              "dsType": "influxdb",
-              "groupBy": [],
-              "measurement": "correcteur_pid",
-              "orderByTime": "ASC",
-              "policy": "default",
-              "refId": "A",
-              "resultFormat": "time_series",
-              "select": [
-                [
-                  {
-                    "params": [
-                      "ki"
-                    ],
-                    "type": "field"
-                  }
-                ]
-              ],
-              "tags": [
-                {
-                  "key": "robot",
-                  "operator": "=~",
-                  "value": "/^$robot_name$/"
-                },
-                {
-                  "condition": "AND",
-                  "key": "name",
-                  "operator": "=",
-                  "value": "orientation"
-                }
-              ]
-            }
-          ],
-          "thresholds": "",
-          "title": "Orientation Ki",
-          "type": "singlestat",
-          "valueFontSize": "80%",
-          "valueMaps": [
-            {
-              "op": "=",
-              "text": "N/A",
-              "value": "null"
-            }
-          ],
-          "valueName": "current"
-        },
-        {
-          "cacheTimeout": null,
-          "colorBackground": false,
-          "colorValue": false,
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "datasource": "influxdb-robots",
-          "format": "none",
-          "gauge": {
-            "maxValue": 100,
-            "minValue": 0,
-            "show": false,
-            "thresholdLabels": false,
-            "thresholdMarkers": true
-          },
-          "gridPos": {
-            "h": 2,
-            "w": 4,
-            "x": 20,
-            "y": 3
-          },
-          "height": "30",
-          "id": 12,
-          "interval": null,
-          "links": [],
-          "mappingType": 1,
-          "mappingTypes": [
-            {
-              "name": "value to text",
-              "value": 1
-            },
-            {
-              "name": "range to text",
-              "value": 2
-            }
-          ],
-          "maxDataPoints": 100,
-          "nullPointMode": "connected",
-          "nullText": null,
-          "postfix": "",
-          "postfixFontSize": "50%",
-          "prefix": "",
-          "prefixFontSize": "50%",
-          "rangeMaps": [
-            {
-              "from": "null",
-              "text": "N/A",
-              "to": "null"
-            }
-          ],
-          "sparkline": {
-            "fillColor": "rgba(31, 118, 189, 0.18)",
-            "full": false,
-            "lineColor": "rgb(31, 120, 193)",
-            "show": false
-          },
-          "tableColumn": "",
-          "targets": [
-            {
-              "dsType": "influxdb",
-              "groupBy": [],
-              "measurement": "correcteur_pid",
-              "orderByTime": "ASC",
-              "policy": "default",
-              "refId": "A",
-              "resultFormat": "time_series",
-              "select": [
-                [
-                  {
-                    "params": [
-                      "kd"
-                    ],
-                    "type": "field"
-                  }
-                ]
-              ],
-              "tags": [
-                {
-                  "key": "robot",
-                  "operator": "=~",
-                  "value": "/^$robot_name$/"
-                },
-                {
-                  "condition": "AND",
-                  "key": "name",
-                  "operator": "=",
-                  "value": "orientation"
-                }
-              ]
-            }
-          ],
-          "thresholds": "",
-          "title": "Orientation Kd",
-          "type": "singlestat",
-          "valueFontSize": "80%",
-          "valueMaps": [
-            {
-              "op": "=",
-              "text": "N/A",
-              "value": "null"
-            }
-          ],
-          "valueName": "current"
-        },
-        {
-          "aliasColors": {},
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
-          "datasource": "influxdb-robots",
-          "fill": 1,
-          "gridPos": {
-            "h": 8,
-            "w": 12,
-            "x": 0,
-            "y": 5
-          },
-          "height": "300",
-          "id": 5,
-          "legend": {
-            "alignAsTable": true,
-            "avg": true,
-            "current": false,
-            "max": true,
-            "min": true,
-            "show": true,
-            "total": false,
-            "values": true
-          },
-          "lines": true,
-          "linewidth": 1,
-          "links": [],
-          "nullPointMode": "null",
-          "percentage": false,
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "spaceLength": 10,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "dsType": "influxdb",
-              "groupBy": [],
-              "measurement": "correcteur_pid",
-              "orderByTime": "ASC",
-              "policy": "default",
-              "refId": "A",
-              "resultFormat": "time_series",
-              "select": [
-                [
-                  {
-                    "params": [
-                      "consigne"
-                    ],
-                    "type": "field"
-                  }
-                ],
-                [
-                  {
-                    "params": [
-                      "input"
-                    ],
-                    "type": "field"
-                  }
-                ],
-                [
-                  {
-                    "params": [
-                      "output"
-                    ],
-                    "type": "field"
-                  }
-                ],
-                [
-                  {
-                    "params": [
-                      "error"
-                    ],
-                    "type": "field"
-                  }
-                ]
-              ],
-              "tags": [
-                {
-                  "key": "robot",
-                  "operator": "=~",
-                  "value": "/^$robot_name$/"
-                },
-                {
-                  "condition": "AND",
-                  "key": "name",
-                  "operator": "=",
-                  "value": "distance"
-                }
-              ]
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeRegions": [],
-          "timeShift": null,
-          "title": "Distance : Consigne, Mesure, Out, Error",
-          "tooltip": {
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "type": "graph",
-          "xaxis": {
-            "buckets": null,
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            },
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            }
-          ],
-          "yaxis": {
-            "align": false,
-            "alignLevel": null
-          }
-        },
-        {
-          "aliasColors": {},
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
-          "datasource": "influxdb-robots",
-          "fill": 1,
-          "gridPos": {
-            "h": 8,
-            "w": 12,
-            "x": 12,
-            "y": 5
-          },
-          "height": "300",
-          "id": 6,
-          "legend": {
-            "alignAsTable": true,
-            "avg": true,
-            "current": false,
-            "max": true,
-            "min": true,
-            "show": true,
-            "total": false,
-            "values": true
-          },
-          "lines": true,
-          "linewidth": 1,
-          "links": [],
-          "nullPointMode": "null",
-          "percentage": false,
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "spaceLength": 10,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "dsType": "influxdb",
-              "groupBy": [],
-              "measurement": "correcteur_pid",
-              "orderByTime": "ASC",
-              "policy": "default",
-              "refId": "A",
-              "resultFormat": "time_series",
-              "select": [
-                [
-                  {
-                    "params": [
-                      "consigne"
-                    ],
-                    "type": "field"
-                  }
-                ],
-                [
-                  {
-                    "params": [
-                      "input"
-                    ],
-                    "type": "field"
-                  }
-                ],
-                [
-                  {
-                    "params": [
-                      "output"
-                    ],
-                    "type": "field"
-                  }
-                ],
-                [
-                  {
-                    "params": [
-                      "error"
-                    ],
-                    "type": "field"
-                  }
-                ]
-              ],
-              "tags": [
-                {
-                  "key": "robot",
-                  "operator": "=~",
-                  "value": "/^$robot_name$/"
-                },
-                {
-                  "condition": "AND",
-                  "key": "name",
-                  "operator": "=",
-                  "value": "orientation"
-                }
-              ]
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeRegions": [],
-          "timeShift": null,
-          "title": "Orientation : Consigne, Mesure, Out, Error",
-          "tooltip": {
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "type": "graph",
-          "xaxis": {
-            "buckets": null,
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            },
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            }
-          ],
-          "yaxis": {
-            "align": false,
-            "alignLevel": null
-          }
-        }
-      ],
+      "panels": [],
       "repeat": null,
       "title": "Correcteur PID Distance / Orientation",
-      "type": "row"
-    },
-    {
-      "collapsed": false,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 36
-      },
-      "id": 21,
-      "panels": [],
-      "title": "Correcteur PID Moteurs Droit / Gauche",
       "type": "row"
     },
     {
@@ -1865,10 +994,10 @@
         "h": 2,
         "w": 4,
         "x": 0,
-        "y": 37
+        "y": 36
       },
       "height": "30",
-      "id": 22,
+      "id": 7,
       "interval": null,
       "links": [],
       "mappingType": 1,
@@ -1932,13 +1061,13 @@
               "condition": "AND",
               "key": "name",
               "operator": "=",
-              "value": "pid_mot_gauche"
+              "value": "distance"
             }
           ]
         }
       ],
       "thresholds": "",
-      "title": "Gauche Kp",
+      "title": "Distance Kp",
       "type": "singlestat",
       "valueFontSize": "80%",
       "valueMaps": [
@@ -1972,10 +1101,10 @@
         "h": 2,
         "w": 4,
         "x": 4,
-        "y": 37
+        "y": 36
       },
       "height": "30",
-      "id": 23,
+      "id": 8,
       "interval": null,
       "links": [],
       "mappingType": 1,
@@ -2039,13 +1168,13 @@
               "condition": "AND",
               "key": "name",
               "operator": "=",
-              "value": "pid_mot_gauche"
+              "value": "distance"
             }
           ]
         }
       ],
       "thresholds": "",
-      "title": "Gauche Ki",
+      "title": "Distance Ki",
       "type": "singlestat",
       "valueFontSize": "80%",
       "valueMaps": [
@@ -2079,10 +1208,10 @@
         "h": 2,
         "w": 4,
         "x": 8,
-        "y": 37
+        "y": 36
       },
       "height": "30",
-      "id": 24,
+      "id": 9,
       "interval": null,
       "links": [],
       "mappingType": 1,
@@ -2146,13 +1275,13 @@
               "condition": "AND",
               "key": "name",
               "operator": "=",
-              "value": "pid_mot_gauche"
+              "value": "distance"
             }
           ]
         }
       ],
       "thresholds": "",
-      "title": "Gauche Kd",
+      "title": "Distance Kd",
       "type": "singlestat",
       "valueFontSize": "80%",
       "valueMaps": [
@@ -2186,10 +1315,10 @@
         "h": 2,
         "w": 4,
         "x": 12,
-        "y": 37
+        "y": 36
       },
       "height": "30",
-      "id": 25,
+      "id": 10,
       "interval": null,
       "links": [],
       "mappingType": 1,
@@ -2253,13 +1382,13 @@
               "condition": "AND",
               "key": "name",
               "operator": "=",
-              "value": "pid_mot_droit"
+              "value": "orientation"
             }
           ]
         }
       ],
       "thresholds": "",
-      "title": "Droit Kp",
+      "title": "Orientation Kp",
       "type": "singlestat",
       "valueFontSize": "80%",
       "valueMaps": [
@@ -2293,10 +1422,10 @@
         "h": 2,
         "w": 4,
         "x": 16,
-        "y": 37
+        "y": 36
       },
       "height": "30",
-      "id": 26,
+      "id": 11,
       "interval": null,
       "links": [],
       "mappingType": 1,
@@ -2360,13 +1489,13 @@
               "condition": "AND",
               "key": "name",
               "operator": "=",
-              "value": "pid_mot_droit"
+              "value": "orientation"
             }
           ]
         }
       ],
       "thresholds": "",
-      "title": "Droit Ki",
+      "title": "Orientation Ki",
       "type": "singlestat",
       "valueFontSize": "80%",
       "valueMaps": [
@@ -2400,10 +1529,10 @@
         "h": 2,
         "w": 4,
         "x": 20,
-        "y": 37
+        "y": 36
       },
       "height": "30",
-      "id": 27,
+      "id": 12,
       "interval": null,
       "links": [],
       "mappingType": 1,
@@ -2467,13 +1596,13 @@
               "condition": "AND",
               "key": "name",
               "operator": "=",
-              "value": "pid_mot_droit"
+              "value": "orientation"
             }
           ]
         }
       ],
       "thresholds": "",
-      "title": "Droit Kd",
+      "title": "Orientation Kd",
       "type": "singlestat",
       "valueFontSize": "80%",
       "valueMaps": [
@@ -2493,13 +1622,13 @@
       "datasource": "influxdb-robots",
       "fill": 1,
       "gridPos": {
-        "h": 10,
+        "h": 8,
         "w": 12,
         "x": 0,
-        "y": 39
+        "y": 38
       },
       "height": "300",
-      "id": 28,
+      "id": 5,
       "legend": {
         "alignAsTable": true,
         "avg": true,
@@ -2575,7 +1704,7 @@
               "condition": "AND",
               "key": "name",
               "operator": "=",
-              "value": "pid_mot_gauche"
+              "value": "distance"
             }
           ]
         }
@@ -2584,7 +1713,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Gauche : Consigne, Mesure, Out, Error",
+      "title": "Distance : Consigne, Mesure, Out, Error",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -2629,13 +1758,13 @@
       "datasource": "influxdb-robots",
       "fill": 1,
       "gridPos": {
-        "h": 10,
+        "h": 8,
         "w": 12,
         "x": 12,
-        "y": 39
+        "y": 38
       },
       "height": "300",
-      "id": 29,
+      "id": 6,
       "legend": {
         "alignAsTable": true,
         "avg": true,
@@ -2711,7 +1840,7 @@
               "condition": "AND",
               "key": "name",
               "operator": "=",
-              "value": "pid_mot_droit"
+              "value": "orientation"
             }
           ]
         }
@@ -2720,7 +1849,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Droit : Consigne, Mesure, Out, Error",
+      "title": "Orientation : Consigne, Mesure, Out, Error",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -2758,12 +1887,940 @@
       }
     },
     {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 46
+      },
+      "id": 21,
+      "panels": [
+        {
+          "cacheTimeout": null,
+          "colorBackground": false,
+          "colorValue": false,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "datasource": "influxdb-robots",
+          "format": "none",
+          "gauge": {
+            "maxValue": 100,
+            "minValue": 0,
+            "show": false,
+            "thresholdLabels": false,
+            "thresholdMarkers": true
+          },
+          "gridPos": {
+            "h": 2,
+            "w": 4,
+            "x": 0,
+            "y": 37
+          },
+          "height": "30",
+          "id": 22,
+          "interval": null,
+          "links": [],
+          "mappingType": 1,
+          "mappingTypes": [
+            {
+              "name": "value to text",
+              "value": 1
+            },
+            {
+              "name": "range to text",
+              "value": 2
+            }
+          ],
+          "maxDataPoints": 100,
+          "nullPointMode": "connected",
+          "nullText": null,
+          "postfix": "",
+          "postfixFontSize": "50%",
+          "prefix": "",
+          "prefixFontSize": "50%",
+          "rangeMaps": [
+            {
+              "from": "null",
+              "text": "N/A",
+              "to": "null"
+            }
+          ],
+          "sparkline": {
+            "fillColor": "rgba(31, 118, 189, 0.18)",
+            "full": false,
+            "lineColor": "rgb(31, 120, 193)",
+            "show": false
+          },
+          "tableColumn": "",
+          "targets": [
+            {
+              "dsType": "influxdb",
+              "groupBy": [],
+              "measurement": "correcteur_pid",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "kp"
+                    ],
+                    "type": "field"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "robot",
+                  "operator": "=~",
+                  "value": "/^$robot_name$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "name",
+                  "operator": "=",
+                  "value": "pid_mot_gauche"
+                }
+              ]
+            }
+          ],
+          "thresholds": "",
+          "title": "Gauche Kp",
+          "type": "singlestat",
+          "valueFontSize": "80%",
+          "valueMaps": [
+            {
+              "op": "=",
+              "text": "N/A",
+              "value": "null"
+            }
+          ],
+          "valueName": "current"
+        },
+        {
+          "cacheTimeout": null,
+          "colorBackground": false,
+          "colorValue": false,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "datasource": "influxdb-robots",
+          "format": "none",
+          "gauge": {
+            "maxValue": 100,
+            "minValue": 0,
+            "show": false,
+            "thresholdLabels": false,
+            "thresholdMarkers": true
+          },
+          "gridPos": {
+            "h": 2,
+            "w": 4,
+            "x": 4,
+            "y": 37
+          },
+          "height": "30",
+          "id": 23,
+          "interval": null,
+          "links": [],
+          "mappingType": 1,
+          "mappingTypes": [
+            {
+              "name": "value to text",
+              "value": 1
+            },
+            {
+              "name": "range to text",
+              "value": 2
+            }
+          ],
+          "maxDataPoints": 100,
+          "nullPointMode": "connected",
+          "nullText": null,
+          "postfix": "",
+          "postfixFontSize": "50%",
+          "prefix": "",
+          "prefixFontSize": "50%",
+          "rangeMaps": [
+            {
+              "from": "null",
+              "text": "N/A",
+              "to": "null"
+            }
+          ],
+          "sparkline": {
+            "fillColor": "rgba(31, 118, 189, 0.18)",
+            "full": false,
+            "lineColor": "rgb(31, 120, 193)",
+            "show": false
+          },
+          "tableColumn": "",
+          "targets": [
+            {
+              "dsType": "influxdb",
+              "groupBy": [],
+              "measurement": "correcteur_pid",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "ki"
+                    ],
+                    "type": "field"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "robot",
+                  "operator": "=~",
+                  "value": "/^$robot_name$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "name",
+                  "operator": "=",
+                  "value": "pid_mot_gauche"
+                }
+              ]
+            }
+          ],
+          "thresholds": "",
+          "title": "Gauche Ki",
+          "type": "singlestat",
+          "valueFontSize": "80%",
+          "valueMaps": [
+            {
+              "op": "=",
+              "text": "N/A",
+              "value": "null"
+            }
+          ],
+          "valueName": "current"
+        },
+        {
+          "cacheTimeout": null,
+          "colorBackground": false,
+          "colorValue": false,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "datasource": "influxdb-robots",
+          "format": "none",
+          "gauge": {
+            "maxValue": 100,
+            "minValue": 0,
+            "show": false,
+            "thresholdLabels": false,
+            "thresholdMarkers": true
+          },
+          "gridPos": {
+            "h": 2,
+            "w": 4,
+            "x": 8,
+            "y": 37
+          },
+          "height": "30",
+          "id": 24,
+          "interval": null,
+          "links": [],
+          "mappingType": 1,
+          "mappingTypes": [
+            {
+              "name": "value to text",
+              "value": 1
+            },
+            {
+              "name": "range to text",
+              "value": 2
+            }
+          ],
+          "maxDataPoints": 100,
+          "nullPointMode": "connected",
+          "nullText": null,
+          "postfix": "",
+          "postfixFontSize": "50%",
+          "prefix": "",
+          "prefixFontSize": "50%",
+          "rangeMaps": [
+            {
+              "from": "null",
+              "text": "N/A",
+              "to": "null"
+            }
+          ],
+          "sparkline": {
+            "fillColor": "rgba(31, 118, 189, 0.18)",
+            "full": false,
+            "lineColor": "rgb(31, 120, 193)",
+            "show": false
+          },
+          "tableColumn": "",
+          "targets": [
+            {
+              "dsType": "influxdb",
+              "groupBy": [],
+              "measurement": "correcteur_pid",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "kd"
+                    ],
+                    "type": "field"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "robot",
+                  "operator": "=~",
+                  "value": "/^$robot_name$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "name",
+                  "operator": "=",
+                  "value": "pid_mot_gauche"
+                }
+              ]
+            }
+          ],
+          "thresholds": "",
+          "title": "Gauche Kd",
+          "type": "singlestat",
+          "valueFontSize": "80%",
+          "valueMaps": [
+            {
+              "op": "=",
+              "text": "N/A",
+              "value": "null"
+            }
+          ],
+          "valueName": "current"
+        },
+        {
+          "cacheTimeout": null,
+          "colorBackground": false,
+          "colorValue": false,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "datasource": "influxdb-robots",
+          "format": "none",
+          "gauge": {
+            "maxValue": 100,
+            "minValue": 0,
+            "show": false,
+            "thresholdLabels": false,
+            "thresholdMarkers": true
+          },
+          "gridPos": {
+            "h": 2,
+            "w": 4,
+            "x": 12,
+            "y": 37
+          },
+          "height": "30",
+          "id": 25,
+          "interval": null,
+          "links": [],
+          "mappingType": 1,
+          "mappingTypes": [
+            {
+              "name": "value to text",
+              "value": 1
+            },
+            {
+              "name": "range to text",
+              "value": 2
+            }
+          ],
+          "maxDataPoints": 100,
+          "nullPointMode": "connected",
+          "nullText": null,
+          "postfix": "",
+          "postfixFontSize": "50%",
+          "prefix": "",
+          "prefixFontSize": "50%",
+          "rangeMaps": [
+            {
+              "from": "null",
+              "text": "N/A",
+              "to": "null"
+            }
+          ],
+          "sparkline": {
+            "fillColor": "rgba(31, 118, 189, 0.18)",
+            "full": false,
+            "lineColor": "rgb(31, 120, 193)",
+            "show": false
+          },
+          "tableColumn": "",
+          "targets": [
+            {
+              "dsType": "influxdb",
+              "groupBy": [],
+              "measurement": "correcteur_pid",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "kp"
+                    ],
+                    "type": "field"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "robot",
+                  "operator": "=~",
+                  "value": "/^$robot_name$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "name",
+                  "operator": "=",
+                  "value": "pid_mot_droit"
+                }
+              ]
+            }
+          ],
+          "thresholds": "",
+          "title": "Droit Kp",
+          "type": "singlestat",
+          "valueFontSize": "80%",
+          "valueMaps": [
+            {
+              "op": "=",
+              "text": "N/A",
+              "value": "null"
+            }
+          ],
+          "valueName": "current"
+        },
+        {
+          "cacheTimeout": null,
+          "colorBackground": false,
+          "colorValue": false,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "datasource": "influxdb-robots",
+          "format": "none",
+          "gauge": {
+            "maxValue": 100,
+            "minValue": 0,
+            "show": false,
+            "thresholdLabels": false,
+            "thresholdMarkers": true
+          },
+          "gridPos": {
+            "h": 2,
+            "w": 4,
+            "x": 16,
+            "y": 37
+          },
+          "height": "30",
+          "id": 26,
+          "interval": null,
+          "links": [],
+          "mappingType": 1,
+          "mappingTypes": [
+            {
+              "name": "value to text",
+              "value": 1
+            },
+            {
+              "name": "range to text",
+              "value": 2
+            }
+          ],
+          "maxDataPoints": 100,
+          "nullPointMode": "connected",
+          "nullText": null,
+          "postfix": "",
+          "postfixFontSize": "50%",
+          "prefix": "",
+          "prefixFontSize": "50%",
+          "rangeMaps": [
+            {
+              "from": "null",
+              "text": "N/A",
+              "to": "null"
+            }
+          ],
+          "sparkline": {
+            "fillColor": "rgba(31, 118, 189, 0.18)",
+            "full": false,
+            "lineColor": "rgb(31, 120, 193)",
+            "show": false
+          },
+          "tableColumn": "",
+          "targets": [
+            {
+              "dsType": "influxdb",
+              "groupBy": [],
+              "measurement": "correcteur_pid",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "ki"
+                    ],
+                    "type": "field"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "robot",
+                  "operator": "=~",
+                  "value": "/^$robot_name$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "name",
+                  "operator": "=",
+                  "value": "pid_mot_droit"
+                }
+              ]
+            }
+          ],
+          "thresholds": "",
+          "title": "Droit Ki",
+          "type": "singlestat",
+          "valueFontSize": "80%",
+          "valueMaps": [
+            {
+              "op": "=",
+              "text": "N/A",
+              "value": "null"
+            }
+          ],
+          "valueName": "current"
+        },
+        {
+          "cacheTimeout": null,
+          "colorBackground": false,
+          "colorValue": false,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "datasource": "influxdb-robots",
+          "format": "none",
+          "gauge": {
+            "maxValue": 100,
+            "minValue": 0,
+            "show": false,
+            "thresholdLabels": false,
+            "thresholdMarkers": true
+          },
+          "gridPos": {
+            "h": 2,
+            "w": 4,
+            "x": 20,
+            "y": 37
+          },
+          "height": "30",
+          "id": 27,
+          "interval": null,
+          "links": [],
+          "mappingType": 1,
+          "mappingTypes": [
+            {
+              "name": "value to text",
+              "value": 1
+            },
+            {
+              "name": "range to text",
+              "value": 2
+            }
+          ],
+          "maxDataPoints": 100,
+          "nullPointMode": "connected",
+          "nullText": null,
+          "postfix": "",
+          "postfixFontSize": "50%",
+          "prefix": "",
+          "prefixFontSize": "50%",
+          "rangeMaps": [
+            {
+              "from": "null",
+              "text": "N/A",
+              "to": "null"
+            }
+          ],
+          "sparkline": {
+            "fillColor": "rgba(31, 118, 189, 0.18)",
+            "full": false,
+            "lineColor": "rgb(31, 120, 193)",
+            "show": false
+          },
+          "tableColumn": "",
+          "targets": [
+            {
+              "dsType": "influxdb",
+              "groupBy": [],
+              "measurement": "correcteur_pid",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "kd"
+                    ],
+                    "type": "field"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "robot",
+                  "operator": "=~",
+                  "value": "/^$robot_name$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "name",
+                  "operator": "=",
+                  "value": "pid_mot_droit"
+                }
+              ]
+            }
+          ],
+          "thresholds": "",
+          "title": "Droit Kd",
+          "type": "singlestat",
+          "valueFontSize": "80%",
+          "valueMaps": [
+            {
+              "op": "=",
+              "text": "N/A",
+              "value": "null"
+            }
+          ],
+          "valueName": "current"
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "influxdb-robots",
+          "fill": 1,
+          "gridPos": {
+            "h": 10,
+            "w": 12,
+            "x": 0,
+            "y": 39
+          },
+          "height": "300",
+          "id": 28,
+          "legend": {
+            "alignAsTable": true,
+            "avg": true,
+            "current": false,
+            "max": true,
+            "min": true,
+            "show": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "dsType": "influxdb",
+              "groupBy": [],
+              "measurement": "correcteur_pid",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "consigne"
+                    ],
+                    "type": "field"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "input"
+                    ],
+                    "type": "field"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "output"
+                    ],
+                    "type": "field"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "error"
+                    ],
+                    "type": "field"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "robot",
+                  "operator": "=~",
+                  "value": "/^$robot_name$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "name",
+                  "operator": "=",
+                  "value": "pid_mot_gauche"
+                }
+              ]
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Gauche : Consigne, Mesure, Out, Error",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "influxdb-robots",
+          "fill": 1,
+          "gridPos": {
+            "h": 10,
+            "w": 12,
+            "x": 12,
+            "y": 39
+          },
+          "height": "300",
+          "id": 29,
+          "legend": {
+            "alignAsTable": true,
+            "avg": true,
+            "current": false,
+            "max": true,
+            "min": true,
+            "show": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "dsType": "influxdb",
+              "groupBy": [],
+              "measurement": "correcteur_pid",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "consigne"
+                    ],
+                    "type": "field"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "input"
+                    ],
+                    "type": "field"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "output"
+                    ],
+                    "type": "field"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "error"
+                    ],
+                    "type": "field"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "robot",
+                  "operator": "=~",
+                  "value": "/^$robot_name$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "name",
+                  "operator": "=",
+                  "value": "pid_mot_droit"
+                }
+              ]
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Droit : Consigne, Mesure, Out, Error",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        }
+      ],
+      "title": "Correcteur PID Moteurs Droit / Gauche",
+      "type": "row"
+    },
+    {
       "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 49
+        "y": 47
       },
       "id": 31,
       "panels": [],
@@ -2780,7 +2837,7 @@
         "h": 9,
         "w": 24,
         "x": 0,
-        "y": 50
+        "y": 48
       },
       "id": 33,
       "legend": {
