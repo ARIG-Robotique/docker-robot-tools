@@ -92,7 +92,7 @@ services:
       - grafana
       - influxdb
     volumes:
-      - ../../robots/nerell-parent/nerell-simulator/logs:/logs/simulateur
+      - ../../java/robots/nerell-parent/nerell-simulator/logs:/logs/simulateur
 
   superviseur:
     image: arig/robots-supervisor:dev
