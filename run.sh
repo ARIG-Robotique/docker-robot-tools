@@ -124,13 +124,13 @@ if [ "$1" == "start" ] ; then
     docker-compose pull
     docker-compose up -d
 
-	waitPortsOpened
+		waitPortsOpened
 
     # Provision de l'infra terraform
     cd infrastructure
 
     # Initialisation des plugins (provider) terraform
-    terraform init -upgrade
+    terraform init
 
     while ! terraform apply -auto-approve ; do
         echo ""
@@ -156,8 +156,8 @@ elif [ "$1" == "destroy" ] ; then
     # Arret infra docker
     logInfo "Destruction docker ..."
     docker-compose down
-	docker volume prune -f
-	docker network prune -f
+		docker volume prune -f
+		docker network prune -f
 else
     printUsage
 fi

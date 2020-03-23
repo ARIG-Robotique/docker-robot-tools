@@ -56,10 +56,6 @@ resource "grafana_dashboard" "asserv_propulsions" {
   config_json = "${file("dashboards/grafana-asserv-propulsions.json")}"
 }
 
-resource "grafana_dashboard" "asserv_carousel" {
-  config_json = "${file("dashboards/grafana-asserv-carousel.json")}"
-}
-
 resource "grafana_dashboard" "tasks" {
   config_json = "${file("dashboards/grafana-tasks.json")}"
 }

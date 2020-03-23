@@ -7,12 +7,12 @@ volumes:
 
 services:
   traefik:
-    image: traefik:1.7-alpine
+    image: traefik:v2.1
     ports:
       - "80:80"
       - "81:8080"
     volumes:
-      - ./conf/traefik.toml:/etc/traefik/traefik.toml
+      - ./conf/traefik.yaml:/etc/traefik/traefik.yaml
       - /var/run/docker.sock:/var/run/docker.sock
 
   influxdb:
@@ -25,43 +25,39 @@ services:
     command: -config /etc/influxdb/influxdb.conf
     labels:
       - "traefik.enable=true"
-      - "traefik.backend=influxdb"
-      - "traefik.frontend.rule=Host:influxdb.arig.local"
+      - "traefik.http.routers.influxdb.rule=Host(`influxdb.arig.local`)"
     depends_on:
       - traefik
 
   chronograf:
-    image: chronograf:1.7-alpine
+    image: chronograf:1.8-alpine
     ports:
       - "8888:8888"
     labels:
       - "traefik.enable=true"
-      - "traefik.backend=chronograf"
-      - "traefik.frontend.rule=Host:chronograf.arig.local"
+      - "traefik.http.routers.chronograf.rule=Host(`chronograf.arig.local`)"
     depends_on:
       - influxdb
 
   grafana:
-    image: grafana/grafana:6.1.4
+    image: grafana/grafana:6.7.1
     ports:
       - "3000:3000"
     volumes:
       - grafana-data:/var/lib/grafana
     labels:
       - "traefik.enable=true"
-      - "traefik.backend=grafana"
-      - "traefik.frontend.rule=Host:grafana.arig.local"
+      - "traefik.http.routers.grafana.rule=Host(`grafana.arig.local`)"
     depends_on:
       - influxdb
 
   pg:
-    image: postgres:11-alpine
+    image: postgres:12-alpine
     ports:
       - "5432:5432"
     environment:
       - DEBUG=true
-      - DB_USER=postgres
-      - DB_PASS=postgres
+      - POSTGRES_PASSWORD=postgres
     volumes:
       - pg-data:/var/lib/postgresql
 
@@ -74,19 +70,19 @@ services:
       - PGADMIN_DEFAULT_PASSWORD=admin
     labels:
       - "traefik.enable=true"
-      - "traefik.backend=pgadmin"
-      - "traefik.frontend.rule=Host:pgadmin.arig.local"
+      - "traefik.http.routers.pgadmin.rule=Host(`pgadmin.arig.local`)"
     depends_on:
       - pg
 
   reader:
-    image: arig/robots-reader:dev
+    image: arig/robots-reader:build-node-13
     ports:
       - "0:4100"
     labels:
       - "traefik.enable=true"
-      - "traefik.backend=reader"
-      - "traefik.frontend.rule=Host:superviseur.arig.local;PathPrefixStrip:/api"
+      - "traefik.http.middlewares.reader-stripprefix.stripprefix.prefixes=/api"
+      - "traefik.http.routers.reader.rule=Host(`superviseur.arig.local`) && PathPrefix(`/api`)"
+      - "traefik.http.routers.reader.middlewares=reader-stripprefix@docker"
     depends_on:
       - pg
       - grafana
@@ -95,21 +91,11 @@ services:
       - ../../java/robots/nerell-parent/nerell-simulator/logs:/logs/simulateur
 
   superviseur:
-    image: arig/robots-supervisor:dev
+    image: arig/robots-supervisor:local
     ports:
       - "0:80"
     labels:
       - "traefik.enable=true"
-      - "traefik.backend=superviseur-new"
-      - "traefik.frontend.rule=Host:superviseur.arig.local"
+      - "traefik.http.routers.superviseur.rule=Host(`superviseur.arig.local`)"
     depends_on:
       - reader
-
-  superviseur-old:
-    image: arig/robots-supervisor:old
-    ports:
-      - "0:80"
-    labels:
-      - "traefik.enable=true"
-      - "traefik.backend=superviseur"
-      - "traefik.frontend.rule=Host:superviseur-old.arig.local"
