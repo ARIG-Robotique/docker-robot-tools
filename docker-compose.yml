@@ -75,7 +75,7 @@ services:
       - pg
 
   reader:
-    image: arig/robots-reader:build-node-13
+    image: arig/robots-reader:dev
     ports:
       - "0:4100"
     labels:
@@ -91,7 +91,7 @@ services:
       - ../../java/robots/nerell-parent/nerell-simulator/logs:/logs/simulateur
 
   superviseur:
-    image: arig/robots-supervisor:local
+    image: arig/robots-supervisor:dev
     ports:
       - "0:80"
     labels:
