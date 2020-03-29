@@ -1,0 +1,14 @@
+{
+    "Servers": {
+        "1": {
+            "Name": "ARIG PG",
+            "Group": "Dockers",
+            "Port": 5432,
+            "Username": "arig",
+            "PassFile": "/pgadmin4/pgpass",
+            "Host": "pg",
+            "SSLMode": "prefer",
+            "MaintenanceDB": "robots"
+        }
+    }
+}
