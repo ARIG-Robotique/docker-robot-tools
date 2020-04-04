@@ -140,6 +140,9 @@ if [ "$1" == "start" ] ; then
     done
     cd ..
 
+    # Lancement de l'IHM du superviseur
+    xdg-open http://superviseur.arig.local > /dev/null
+
 elif [ "$1" == "stop" ] ; then
     # Arret infra docker
     docker-compose stop
