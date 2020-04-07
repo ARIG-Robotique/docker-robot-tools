@@ -1,13 +1,13 @@
 # Configuration PostgreSQL #
 ############################
 resource "postgresql_role" "arig" {
-  name = "${var.users["arig_username"]}"
+  name = "${local.users["arig_username"]}"
   password = "${var.users["arig_password"]}"
   login = true
 }
 
 resource "postgresql_database" "robots" {
-  name = "${var.bddName}"
+  name = "${local.bddName}"
   owner = "${postgresql_role.arig.name}"
   allow_connections = true
 }
@@ -15,12 +15,12 @@ resource "postgresql_database" "robots" {
 # Configuration Influx DB #
 ###########################
 resource "influxdb_database" "robots" {
-  name = "${var.bddName}"
+  name = "${local.bddName}"
 }
 
 resource "influxdb_user" "arig" {
-  name = "${var.users["arig_username"]}"
-  password = "${var.users["arig_password"]}"
+  name = "${local.users["arig_username"]}"
+  password = "${local.users["arig_password"]}"
 
   grant {
     database = "${influxdb_database.robots.name}"
@@ -58,4 +58,8 @@ resource "grafana_dashboard" "asserv_propulsions" {
 
 resource "grafana_dashboard" "tasks" {
   config_json = "${file("dashboards/grafana-tasks.json")}"
+}
+
+resource "grafana_dashboard" "logs" {
+  config_json = "${file("dashboards/grafana-logs.json")}"
 }

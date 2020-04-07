@@ -435,7 +435,7 @@
     ]
   },
   "timezone": "browser",
-  "title": "Tasks",
+  "title": "Robots Tasks",
   "uid": "robots-tasks",
   "variables": {
     "list": []

@@ -2452,7 +2452,7 @@
     ]
   },
   "timezone": "browser",
-  "title": "Asservissement propulsions",
+  "title": "Robots Asservissement propulsions",
   "uid": "robots-asserv-propulsions",
   "variables": {
     "list": []

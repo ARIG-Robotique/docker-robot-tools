@@ -2,19 +2,19 @@
 ###############################
 
 provider "grafana" {
-  url = "http://${var.hosts["grafana"]}/"
-  auth = "${var.users["admin_username"]}:${var.users["admin_password"]}"
+  url = "http://${local.hosts["grafana"]}/"
+  auth = "${local.users["admin_username"]}:${local.users["admin_password"]}"
 }
 
 provider "influxdb" {
-  url = "http://${var.hosts["influxdb"]}/"
-  username = "${var.users["root_username"]}"
-  password = "${var.users["root_password"]}"
+  url = "http://${local.hosts["influxdb"]}/"
+  username = "${local.users["root_username"]}"
+  password = "${local.users["root_password"]}"
 }
 
 provider "postgresql" {
-  host = "${var.hosts["postgres"]}"
-  username = "${var.users["postgres_username"]}"
-  password = "${var.users["postgres_password"]}"
+  host = "${local.hosts["postgres"]}"
+  username = "${local.users["postgres_username"]}"
+  password = "${local.users["postgres_password"]}"
   sslmode = "disable"
 }
