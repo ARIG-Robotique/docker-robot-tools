@@ -1697,6 +1697,7 @@
       "steppedLine": false,
       "targets": [
         {
+          "alias": "$col",
           "dsType": "influxdb",
           "groupBy": [],
           "measurement": "correcteur_pid",
@@ -1717,14 +1718,6 @@
               {
                 "params": [
                   "input"
-                ],
-                "type": "field"
-              }
-            ],
-            [
-              {
-                "params": [
-                  "output"
                 ],
                 "type": "field"
               }
@@ -1838,6 +1831,7 @@
       "steppedLine": false,
       "targets": [
         {
+          "alias": "$col",
           "dsType": "influxdb",
           "groupBy": [],
           "measurement": "correcteur_pid",
@@ -1858,14 +1852,6 @@
               {
                 "params": [
                   "input"
-                ],
-                "type": "field"
-              }
-            ],
-            [
-              {
-                "params": [
-                  "output"
                 ],
                 "type": "field"
               }
@@ -2011,6 +1997,14 @@
                 ],
                 "type": "field"
               }
+            ],
+            [
+              {
+                "params": [
+                  "output"
+                ],
+                "type": "field"
+              }
             ]
           ],
           "tags": [
@@ -2142,6 +2136,14 @@
               {
                 "params": [
                   "d"
+                ],
+                "type": "field"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "output"
                 ],
                 "type": "field"
               }
@@ -2457,5 +2459,5 @@
   "variables": {
     "list": []
   },
-  "version": 3
+  "version": 4
 }
