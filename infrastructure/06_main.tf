@@ -2,7 +2,7 @@
 ############################
 resource "postgresql_role" "arig" {
   name = "${local.users["arig_username"]}"
-  password = "${var.users["arig_password"]}"
+  password = "${local.users["arig_password"]}"
   login = true
 }
 
