@@ -17,7 +17,7 @@
   "gnetId": null,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1585504452010,
+  "iteration": 1591006719385,
   "links": [],
   "panels": [
     {
@@ -83,7 +83,7 @@
           "groupBy": [
             {
               "params": [
-                "$interval"
+                "20ms"
               ],
               "type": "time"
             },
@@ -241,7 +241,7 @@
           "groupBy": [
             {
               "params": [
-                "$interval"
+                "20ms"
               ],
               "type": "time"
             },
@@ -418,7 +418,7 @@
           "groupBy": [
             {
               "params": [
-                "$interval"
+                "20ms"
               ],
               "type": "time"
             }
@@ -574,7 +574,7 @@
           "groupBy": [
             {
               "params": [
-                "$interval"
+                "20ms"
               ],
               "type": "time"
             },
@@ -733,7 +733,7 @@
           "groupBy": [
             {
               "params": [
-                "$interval"
+                "20ms"
               ],
               "type": "time"
             }
@@ -886,7 +886,7 @@
           "groupBy": [
             {
               "params": [
-                "$interval"
+                "20ms"
               ],
               "type": "time"
             }
@@ -1699,7 +1699,14 @@
         {
           "alias": "$col",
           "dsType": "influxdb",
-          "groupBy": [],
+          "groupBy": [
+            {
+              "params": [
+                "20ms"
+              ],
+              "type": "time"
+            }
+          ],
           "measurement": "correcteur_pid",
           "orderByTime": "ASC",
           "policy": "default",
@@ -1712,6 +1719,22 @@
                   "consigne"
                 ],
                 "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              },
+              {
+                "params": [
+                  "/3"
+                ],
+                "type": "math"
+              },
+              {
+                "params": [
+                  "consigne"
+                ],
+                "type": "alias"
               }
             ],
             [
@@ -1720,14 +1743,16 @@
                   "input"
                 ],
                 "type": "field"
-              }
-            ],
-            [
+              },
+              {
+                "params": [],
+                "type": "mean"
+              },
               {
                 "params": [
-                  "error"
+                  "mesure"
                 ],
-                "type": "field"
+                "type": "alias"
               }
             ]
           ],
@@ -1750,7 +1775,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Distance : Consigne, Mesure, Out, Error",
+      "title": "Distance : Consigne, Mesure",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -1833,7 +1858,14 @@
         {
           "alias": "$col",
           "dsType": "influxdb",
-          "groupBy": [],
+          "groupBy": [
+            {
+              "params": [
+                "20ms"
+              ],
+              "type": "time"
+            }
+          ],
           "measurement": "correcteur_pid",
           "orderByTime": "ASC",
           "policy": "default",
@@ -1846,6 +1878,22 @@
                   "consigne"
                 ],
                 "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              },
+              {
+                "params": [
+                  " / 6"
+                ],
+                "type": "math"
+              },
+              {
+                "params": [
+                  "consigne"
+                ],
+                "type": "alias"
               }
             ],
             [
@@ -1854,14 +1902,16 @@
                   "input"
                 ],
                 "type": "field"
-              }
-            ],
-            [
+              },
+              {
+                "params": [],
+                "type": "mean"
+              },
               {
                 "params": [
-                  "error"
+                  "mesure"
                 ],
-                "type": "field"
+                "type": "alias"
               }
             ]
           ],
@@ -1884,7 +1934,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Orientation : Consigne, Mesure, Out, Error",
+      "title": "Orientation : Consigne, Mesure",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -1930,7 +1980,7 @@
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
-        "h": 8,
+        "h": 11,
         "w": 12,
         "x": 0,
         "y": 46
@@ -1967,7 +2017,14 @@
         {
           "alias": "$col",
           "dsType": "influxdb",
-          "groupBy": [],
+          "groupBy": [
+            {
+              "params": [
+                "20ms"
+              ],
+              "type": "time"
+            }
+          ],
           "measurement": "correcteur_pid",
           "orderByTime": "ASC",
           "policy": "default",
@@ -1980,6 +2037,16 @@
                   "p"
                 ],
                 "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              },
+              {
+                "params": [
+                  "P"
+                ],
+                "type": "alias"
               }
             ],
             [
@@ -1988,6 +2055,16 @@
                   "i"
                 ],
                 "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              },
+              {
+                "params": [
+                  "I"
+                ],
+                "type": "alias"
               }
             ],
             [
@@ -1996,6 +2073,16 @@
                   "d"
                 ],
                 "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              },
+              {
+                "params": [
+                  "D"
+                ],
+                "type": "alias"
               }
             ],
             [
@@ -2004,6 +2091,16 @@
                   "output"
                 ],
                 "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              },
+              {
+                "params": [
+                  "Output"
+                ],
+                "type": "alias"
               }
             ]
           ],
@@ -2072,7 +2169,7 @@
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
-        "h": 8,
+        "h": 11,
         "w": 12,
         "x": 12,
         "y": 46
@@ -2109,7 +2206,14 @@
         {
           "alias": "$col",
           "dsType": "influxdb",
-          "groupBy": [],
+          "groupBy": [
+            {
+              "params": [
+                "20ms"
+              ],
+              "type": "time"
+            }
+          ],
           "measurement": "correcteur_pid",
           "orderByTime": "ASC",
           "policy": "default",
@@ -2122,6 +2226,16 @@
                   "p"
                 ],
                 "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              },
+              {
+                "params": [
+                  "P"
+                ],
+                "type": "alias"
               }
             ],
             [
@@ -2130,6 +2244,16 @@
                   "i"
                 ],
                 "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              },
+              {
+                "params": [
+                  "I"
+                ],
+                "type": "alias"
               }
             ],
             [
@@ -2138,6 +2262,16 @@
                   "d"
                 ],
                 "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              },
+              {
+                "params": [
+                  "D"
+                ],
+                "type": "alias"
               }
             ],
             [
@@ -2146,6 +2280,16 @@
                   "output"
                 ],
                 "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              },
+              {
+                "params": [
+                  "Output"
+                ],
+                "type": "alias"
               }
             ]
           ],
@@ -2212,7 +2356,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 54
+        "y": 57
       },
       "id": 31,
       "panels": [],
@@ -2231,7 +2375,7 @@
         "h": 9,
         "w": 24,
         "x": 0,
-        "y": 55
+        "y": 58
       },
       "hiddenSeries": false,
       "id": 33,
@@ -2266,7 +2410,7 @@
           "groupBy": [
             {
               "params": [
-                "$__interval"
+                "20ms"
               ],
               "type": "time"
             },
@@ -2454,10 +2598,10 @@
     ]
   },
   "timezone": "browser",
-  "title": "Robots Asservissement propulsions",
+  "title": "Robots Asservissement Propulsions",
   "uid": "robots-asserv-propulsions",
   "variables": {
     "list": []
   },
-  "version": 4
+  "version": 6
 }
