@@ -63,3 +63,7 @@ resource "grafana_dashboard" "tasks" {
 resource "grafana_dashboard" "logs" {
   config_json = "${file("dashboards/grafana-logs.json")}"
 }
+
+resource "grafana_dashboard" "match" {
+  config_json = "${file("dashboards/grafana-match.json")}"
+}
