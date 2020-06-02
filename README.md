@@ -5,7 +5,9 @@ Projet permettant de regrouper l'ensemble des outils utilisé pour le debug de n
 Afin de fonctionné correctement il faut avoir installé les outils suivant :
 * Docker [https://www.docker.com/]
 * Docker compose [https://docs.docker.com/compose/]
-* Terraform (>= 0.10) [https://www.terraform.io/]
+* Docker log plugin Loki [https://github.com/grafana/loki/tree/master/cmd/docker-driver]
+* Terraform (>= 0.11) [https://www.terraform.io/]
+* wait-port [https://github.com/dwmkerr/wait-port]
 
 Ensuite il suffit de lancer le script "run.sh" avec un des arguments suivant :
 * start
@@ -17,5 +19,6 @@ Il faut également ajouter (au préalable) dans son fichier /etc/hosts la résol
 * grafana.arig.local
 * influxdb.arig.local
 * chronograf.arig.local
+* loki.arig.local
 
 Enjoy!

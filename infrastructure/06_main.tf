@@ -52,18 +52,43 @@ resource "grafana_data_source" "pg_robots" {
   access_mode = "proxy"
 }
 
-resource "grafana_dashboard" "asserv_propulsions" {
-  config_json = "${file("dashboards/grafana-asserv-propulsions.json")}"
+resource "grafana_data_source" "loki_robots" {
+  type = "loki"
+  name = "loki-robots"
+  url = "loki:3100"
+  is_default = false
+  access_mode = "proxy"
 }
 
-resource "grafana_dashboard" "tasks" {
-  config_json = "${file("dashboards/grafana-tasks.json")}"
+resource "grafana_folder" "infra" {
+  title = "Infrastructure"
 }
 
-resource "grafana_dashboard" "logs" {
-  config_json = "${file("dashboards/grafana-logs.json")}"
+resource "grafana_folder" "robots" {
+  title = "Robots"
 }
 
-resource "grafana_dashboard" "match" {
-  config_json = "${file("dashboards/grafana-match.json")}"
+resource "grafana_dashboard" "infra_logs" {
+  config_json = "${file("dashboards/grafana-infra-logs.json")}"
+  folder = "${grafana_folder.infra.id}"
+}
+
+resource "grafana_dashboard" "robot_asserv_propulsions" {
+  config_json = "${file("dashboards/grafana-robot-asserv-propulsions.json")}"
+  folder = "${grafana_folder.robots.id}"
+}
+
+resource "grafana_dashboard" "robot_tasks" {
+  config_json = "${file("dashboards/grafana-robot-tasks.json")}"
+  folder = "${grafana_folder.robots.id}"
+}
+
+resource "grafana_dashboard" "robot_logs" {
+  config_json = "${file("dashboards/grafana-robot-logs.json")}"
+  folder = "${grafana_folder.robots.id}"
+}
+
+resource "grafana_dashboard" "robot_match" {
+  config_json = "${file("dashboards/grafana-robot-match.json")}"
+  folder = "${grafana_folder.robots.id}"
 }

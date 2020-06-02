@@ -44,30 +44,30 @@ export WHITE
 # Fonction de log info
 function logInfo {
 	DATE=`date +"%d-%m-%y %T"`
-	echo -e " [ ${LGREEN}INFO${RESTORE} : $DATE ] $1"
+	echo -e " [ ${LGREEN}INFO${RESTORE} : ${DATE} ] $1"
 }
 
 # Fonction de log warning
 function logWarn {
 	DATE=`date +"%d-%m-%y %T"`
-	echo -e " [ ${LYELLOW}WARN${RESTORE} : $DATE ] $1"
+	echo -e " [ ${LYELLOW}WARN${RESTORE} : ${DATE} ] $1"
 }
 
 # Fonctions de log erreur
 function logError {
 	DATE=`date +"%d-%m-%y %T"`
-	echo -e " [ ${LRED}ERROR${RESTORE} : $DATE ] $1"
+	echo -e " [ ${LRED}ERROR${RESTORE} : ${DATE} ] $1"
 }
 
 # Affiche une chaine et termine le script
 function logErrorAndExit {
-    logError "$1"
-    exit $2
+    logError "${1}"
+    exit ${2}
 }
 
 # Affiche une chaine et termine le script avec 0
 function logInfoAndExit {
-    logInfo "$1"
+    logInfo "${1}"
     exit 0
 }
 
@@ -83,6 +83,11 @@ function checkBinaries {
     docker-compose version > /dev/null || logErrorAndExit "Docker compose doit être installé" 2
     logInfo " * docker-compose : [${LGREEN}OK${RESTORE}]"
 
+    if [[ $(docker plugin ls | grep loki | wc -l) -eq 0 ]] ; then
+        docker plugin install  grafana/loki-docker-driver:latest --alias loki --grant-all-permission
+    fi
+    logInfo " * docker log loki : [${LGREEN}OK${RESTORE}]"
+
     terraform version > /dev/null || logErrorAndExit "Terraform doit être installé" 3
     logInfo " * terraform : [${LGREEN}OK${RESTORE}]"
 
@@ -91,10 +96,16 @@ function checkBinaries {
     logInfo " * wait-port : [${LGREEN}OK${RESTORE}]"
 
     logInfo "Version des binaires ..."
+    
     logInfo " * Docker ..."
     docker version
+    
+    logInfo " * Docker plugins ..."
+    docker plugin ls
+    
     logInfo " * Docker compose ..."
     docker-compose version
+    
     logInfo " * Terraform ..."
     terraform version
 }
@@ -110,6 +121,8 @@ function waitPortsOpened {
     wait-port -t 20000 5432
     wait-port -t 20000 8086
     wait-port -t 20000 3000
+    wait-port -t 20000 3100
+    wait-port -t 20000 8888
 }
 
 # Corps du programme #
@@ -124,7 +137,7 @@ if [ "$1" == "start" ] ; then
     docker-compose pull
     docker-compose up -d
 
-		waitPortsOpened
+	waitPortsOpened
 
     # Provision de l'infra terraform
     cd infrastructure
@@ -159,8 +172,8 @@ elif [ "$1" == "destroy" ] ; then
     # Arret infra docker
     logInfo "Destruction docker ..."
     docker-compose down
-		docker volume prune -f
-		docker network prune -f
+	docker volume prune -f
+	docker network prune -f
 else
     printUsage
 fi

@@ -4,10 +4,17 @@ volumes:
   influx-data:
   grafana-data:
   pg-data:
+  loki-data:
 
 services:
   traefik:
-    image: traefik:v2.1
+    image: traefik:v2.2
+    logging:
+      driver: loki
+      options:
+        loki-url: "http://loki.arig.local:3100/loki/api/v1/push"
+        loki-retries: "5"
+        loki-batch-size: "400"
     ports:
       - "80:80"
       - "81:8080"
@@ -15,8 +22,33 @@ services:
       - ./conf/traefik.yaml:/etc/traefik/traefik.yaml
       - /var/run/docker.sock:/var/run/docker.sock
 
+  loki:
+    image: grafana/loki:1.5.0
+    logging:
+      driver: loki
+      options:
+        loki-url: "http://loki.arig.local:3100/loki/api/v1/push"
+        loki-retries: "5"
+        loki-batch-size: "400"
+    ports:
+      - "3100:3100"
+    volumes:
+      - ./conf/loki-config.yaml:/etc/loki/local-config.yaml:z
+      - loki-data:/loki
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.loki.rule=Host(`loki.arig.local`)"
+    depends_on:
+      - traefik
+
   influxdb:
-    image: influxdb:1.7-alpine
+    image: influxdb:1.8-alpine
+    logging:
+      driver: loki
+      options:
+        loki-url: "http://loki.arig.local:3100/loki/api/v1/push"
+        loki-retries: "5"
+        loki-batch-size: "400"
     ports:
       - "8086:8086"
     volumes:
@@ -31,16 +63,29 @@ services:
 
   chronograf:
     image: chronograf:1.8-alpine
+    logging:
+      driver: loki
+      options:
+        loki-url: "http://loki.arig.local:3100/loki/api/v1/push"
+        loki-retries: "5"
+        loki-batch-size: "400"
     ports:
       - "8888:8888"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.chronograf.rule=Host(`chronograf.arig.local`)"
     depends_on:
+      - traefik
       - influxdb
 
   grafana:
-    image: grafana/grafana:6.7.1
+    image: grafana/grafana:7.0.1
+    logging:
+      driver: loki
+      options:
+        loki-url: "http://loki.arig.local:3100/loki/api/v1/push"
+        loki-retries: "5"
+        loki-batch-size: "400"
     ports:
       - "3000:3000"
     volumes:
@@ -49,10 +94,17 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.grafana.rule=Host(`grafana.arig.local`)"
     depends_on:
+      - traefik
       - influxdb
 
   pg:
     image: postgres:12-alpine
+    logging:
+      driver: loki
+      options:
+        loki-url: "http://loki.arig.local:3100/loki/api/v1/push"
+        loki-retries: "5"
+        loki-batch-size: "400"
     ports:
       - "5432:5432"
     environment:
@@ -63,6 +115,12 @@ services:
 
   pgadmin:
     image: dpage/pgadmin4
+    logging:
+      driver: loki
+      options:
+        loki-url: "http://loki.arig.local:3100/loki/api/v1/push"
+        loki-retries: "5"
+        loki-batch-size: "400"
     ports:
       - "0:80"
     environment:
@@ -79,6 +137,12 @@ services:
 
   reader:
     image: arig/robots-reader:dev
+    logging:
+      driver: loki
+      options:
+        loki-url: "http://loki.arig.local:3100/loki/api/v1/push"
+        loki-retries: "5"
+        loki-batch-size: "400"
     ports:
       - "0:4100"
     labels:
@@ -95,6 +159,12 @@ services:
 
   superviseur:
     image: arig/robots-supervisor:dev
+    logging:
+      driver: loki
+      options:
+        loki-url: "http://loki.arig.local:3100/loki/api/v1/push"
+        loki-retries: "5"
+        loki-batch-size: "400"
     ports:
       - "0:80"
     labels:
