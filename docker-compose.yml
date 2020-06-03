@@ -62,7 +62,7 @@ services:
       - traefik
 
   chronograf:
-    image: chronograf:1.8-alpine
+    image: chronograf:1.7-alpine
     logging:
       driver: loki
       options:
