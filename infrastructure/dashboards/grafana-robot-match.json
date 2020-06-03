@@ -17,7 +17,7 @@
   "gnetId": null,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1591007688874,
+  "iteration": 1591223630675,
   "links": [],
   "panels": [
     {
@@ -40,6 +40,12 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "fill": 0,
       "fillGradient": 0,
       "gridPos": {
@@ -190,6 +196,12 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -332,6 +344,12 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -469,14 +487,20 @@
     },
     {
       "aliasColors": {
-        "Derivate": "light-blue",
-        "Negative Seuil": "super-light-red",
-        "Positive Seuil": "super-light-red"
+        "Derivate": "super-light-blue",
+        "Negative Seuil": "light-green",
+        "Positive Seuil": "super-light-green"
       },
       "bars": false,
       "dashLength": 10,
       "dashes": false,
       "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "fill": 0,
       "fillGradient": 0,
       "gridPos": {
@@ -658,14 +682,20 @@
     },
     {
       "aliasColors": {
-        "Derivate": "light-blue",
-        "Negative Seuil": "super-light-red",
-        "Positive Seuil": "super-light-red"
+        "Derivate": "super-light-blue",
+        "Negative Seuil": "super-light-green",
+        "Positive Seuil": "super-light-green"
       },
       "bars": false,
       "dashLength": 10,
       "dashes": false,
       "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "fill": 0,
       "fillGradient": 0,
       "gridPos": {
@@ -847,7 +877,7 @@
     }
   ],
   "refresh": "10s",
-  "schemaVersion": 22,
+  "schemaVersion": 25,
   "style": "dark",
   "tags": [],
   "templating": {
@@ -858,7 +888,6 @@
         "definition": "",
         "hide": 0,
         "includeAll": false,
-        "index": -1,
         "label": "Nom du robot",
         "multi": false,
         "name": "robot_name",
@@ -882,7 +911,6 @@
   },
   "timepicker": {
     "refresh_intervals": [
-      "5s",
       "10s",
       "30s",
       "1m",
