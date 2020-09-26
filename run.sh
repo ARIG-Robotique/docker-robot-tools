@@ -84,7 +84,7 @@ function checkBinaries {
     logInfo " * docker-compose : [${LGREEN}OK${RESTORE}]"
 
     if [[ $(docker plugin ls | grep loki | wc -l) -eq 0 ]] ; then
-        docker plugin install  grafana/loki-docker-driver:latest --alias loki --grant-all-permission
+        docker plugin install  grafana/loki-docker-driver:latest --alias loki --grant-all-permissions
     fi
     logInfo " * docker log loki : [${LGREEN}OK${RESTORE}]"
 
