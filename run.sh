@@ -131,6 +131,9 @@ checkBinaries
 
 systemctl stop httpd
 systemctl stop postgresql-docker
+systemctl stop influxdb-docker
+systemctl stop grafana-docker
+systemctl stop chronograf-docker
 
 if [ "$1" == "start" ] ; then
     # Démarrage infra docker
