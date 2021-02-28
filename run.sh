@@ -84,7 +84,7 @@ function checkBinaries {
     logInfo " * docker-compose : [${LGREEN}OK${RESTORE}]"
 
     if [[ $(docker plugin ls | grep loki | wc -l) -eq 0 ]] ; then
-        docker plugin install  grafana/loki-docker-driver:latest --alias loki --grant-all-permissions
+        docker plugin install grafana/loki-docker-driver:latest --alias loki --grant-all-permissions
     fi
     logInfo " * docker log loki : [${LGREEN}OK${RESTORE}]"
 
@@ -96,16 +96,16 @@ function checkBinaries {
     logInfo " * wait-port : [${LGREEN}OK${RESTORE}]"
 
     logInfo "Version des binaires ..."
-    
+
     logInfo " * Docker ..."
     docker version
-    
+
     logInfo " * Docker plugins ..."
     docker plugin ls
-    
+
     logInfo " * Docker compose ..."
     docker-compose version
-    
+
     logInfo " * Terraform ..."
     terraform version
 }
@@ -140,7 +140,7 @@ if [ "$1" == "start" ] ; then
     docker-compose pull
     docker-compose up -d
 
-	waitPortsOpened
+		waitPortsOpened
 
     # Provision de l'infra terraform
     cd infrastructure
