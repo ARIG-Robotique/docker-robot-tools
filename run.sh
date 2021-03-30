@@ -43,140 +43,142 @@ export WHITE
 
 # Fonction de log info
 function logInfo {
-	DATE=`date +"%d-%m-%y %T"`
-	echo -e " [ ${LGREEN}INFO${RESTORE} : ${DATE} ] $1"
+  DATE=`date +"%d-%m-%y %T"`
+  echo -e " [ ${LGREEN}INFO${RESTORE} : ${DATE} ] $1"
 }
 
 # Fonction de log warning
 function logWarn {
-	DATE=`date +"%d-%m-%y %T"`
-	echo -e " [ ${LYELLOW}WARN${RESTORE} : ${DATE} ] $1"
+  DATE=`date +"%d-%m-%y %T"`
+  echo -e " [ ${LYELLOW}WARN${RESTORE} : ${DATE} ] $1"
 }
 
 # Fonctions de log erreur
 function logError {
-	DATE=`date +"%d-%m-%y %T"`
-	echo -e " [ ${LRED}ERROR${RESTORE} : ${DATE} ] $1"
+  DATE=`date +"%d-%m-%y %T"`
+  echo -e " [ ${LRED}ERROR${RESTORE} : ${DATE} ] $1"
 }
 
 # Affiche une chaine et termine le script
 function logErrorAndExit {
-    logError "${1}"
-    exit ${2}
+  logError "${1}"
+  exit ${2}
 }
 
 # Affiche une chaine et termine le script avec 0
 function logInfoAndExit {
-    logInfo "${1}"
-    exit 0
+  logInfo "${1}"
+  exit 0
 }
 
 # Fonctions #
 #############
 
 function checkBinaries {
-    # Contrôle présence des binaires obligatoire
-    logInfo "Contrôle présence binaire obligatoire ..."
-    docker version > /dev/null || logErrorAndExit "Docker doit être installé" 1
-    logInfo " * docker : [${LGREEN}OK${RESTORE}]"
+  # Contrôle présence des binaires obligatoire
+  logInfo "Contrôle présence binaire obligatoire ..."
+  docker version > /dev/null || logErrorAndExit "Docker doit être installé" 1
+  logInfo " * docker : [${LGREEN}OK${RESTORE}]"
 
-    docker-compose version > /dev/null || logErrorAndExit "Docker compose doit être installé" 2
-    logInfo " * docker-compose : [${LGREEN}OK${RESTORE}]"
+  docker-compose version > /dev/null || logErrorAndExit "Docker compose doit être installé" 2
+  logInfo " * docker-compose : [${LGREEN}OK${RESTORE}]"
 
-    if [[ $(docker plugin ls | grep loki | wc -l) -eq 0 ]] ; then
-        docker plugin install grafana/loki-docker-driver:latest --alias loki --grant-all-permissions
-    fi
-    logInfo " * docker log loki : [${LGREEN}OK${RESTORE}]"
+  if [[ $(docker plugin ls | grep loki | wc -l) -eq 0 ]] ; then
+      docker plugin install grafana/loki-docker-driver:latest --alias loki --grant-all-permissions
+  fi
+  logInfo " * docker log loki : [${LGREEN}OK${RESTORE}]"
 
-    terraform version > /dev/null || logErrorAndExit "Terraform doit être installé" 3
-    logInfo " * terraform : [${LGREEN}OK${RESTORE}]"
+  terraform version > /dev/null || logErrorAndExit "Terraform doit être installé" 3
+  logInfo " * terraform : [${LGREEN}OK${RESTORE}]"
 
-    wait-port > /dev/null
-    [ $? -eq 127 ] && logErrorAndExit "wait-port doit être installé (https://github.com/dwmkerr/wait-port)" 4
-    logInfo " * wait-port : [${LGREEN}OK${RESTORE}]"
+  wait-port > /dev/null
+  [ $? -eq 127 ] && logErrorAndExit "wait-port doit être installé (https://github.com/dwmkerr/wait-port)" 4
+  logInfo " * wait-port : [${LGREEN}OK${RESTORE}]"
 
-    logInfo "Version des binaires ..."
+  logInfo "Version des binaires ..."
 
-    logInfo " * Docker ..."
-    docker version
+  logInfo " * Docker ..."
+  docker version
 
-    logInfo " * Docker plugins ..."
-    docker plugin ls
+  logInfo " * Docker plugins ..."
+  docker plugin ls
 
-    logInfo " * Docker compose ..."
-    docker-compose version
+  logInfo " * Docker compose ..."
+  docker-compose version
 
-    logInfo " * Terraform ..."
-    terraform version
+  logInfo " * Terraform ..."
+  TF_REQUIRED="v0.14.3"
+  TF_VERSION=$(terraform --version | head -1 | cut -d ' ' -f2)
+  terraform version
+  if [[ "$(printf '%s\n' "${TF_REQUIRED}" "${TF_VERSION}" | sort -V | head -n1)" != "${TF_REQUIRED}" ]] ; then
+    logWarn " /!\ Version minimal de Terraform requise : ${TF_REQUIRED}"
+    terraform-select-version
+  fi
 }
 
 function printUsage {
-    logErrorAndExit " Usage: ./run.sh start|stop|destroy" 99
+  logErrorAndExit " Usage: ./run.sh start|stop|destroy" 99
 }
 
 function waitPortsOpened {
-    logInfo "Wait all services are up to install infrastructure ..."
-    wait-port -t 20000 80
-    wait-port -t 20000 81
-    wait-port -t 20000 5432
-    wait-port -t 20000 8086
-    wait-port -t 20000 3000
-    wait-port -t 20000 3100
-    wait-port -t 20000 8888
+  logInfo "Wait all services are up to install infrastructure ..."
+  wait-port -t 10000 80
+  wait-port -t 10000 81
+  wait-port -t 10000 5432
+  wait-port -t 10000 8086
+  wait-port -t 10000 3000
+  wait-port -t 10000 3100
+  wait-port -t 10000 8888
 }
 
 # Corps du programme #
 ######################
 checkBinaries
 
-systemctl stop httpd
-systemctl stop postgresql-docker
-systemctl stop influxdb-docker
-systemctl stop grafana-docker
-systemctl stop chronograf-docker
+sglk-dev-stack stop
 
 if [ "$1" == "start" ] ; then
-    # Démarrage infra docker
-    docker-compose pull
-    docker-compose up -d
+  # Démarrage infra docker
+  docker-compose pull
+  docker-compose up -d
 
-		waitPortsOpened
+  waitPortsOpened
 
-    # Provision de l'infra terraform
-    cd infrastructure
+  # Provision de l'infra terraform
+  cd infrastructure
 
-    # Initialisation des plugins (provider) terraform
-    terraform init
+  # Initialisation des plugins (provider) terraform
+  terraform init
 
-    while ! terraform apply -auto-approve ; do
-        echo ""
-        logError "Failed to initiate infrastructure. Wait 5 seconds"
-        echo ""
-        sleep 5
-    done
-    cd ..
+  while ! terraform apply -auto-approve ; do
+      echo ""
+      logError "Failed to initiate infrastructure. Wait 5 seconds"
+      echo ""
+      sleep 5
+  done
+  cd ..
 
-    # Lancement de l'IHM du superviseur
-    xdg-open http://superviseur.arig.local > /dev/null
+  # Lancement de l'IHM du superviseur
+  xdg-open http://superviseur.arig.local > /dev/null
 
 elif [ "$1" == "stop" ] ; then
-    # Arret infra docker
-    docker-compose stop
+  # Arret infra docker
+  docker-compose stop
 
 elif [ "$1" == "destroy" ] ; then
-    # Destruction infra
-    logInfo "Destruction terraform ..."
-    cd infrastructure
-    terraform destroy -force
-    rm -Rvf .terraform
-    rm -vf *.tfstate*
-    cd ..
+  # Destruction infra
+  logInfo "Destruction terraform ..."
+  cd infrastructure
+  terraform destroy -force
+  rm -Rvf .terraform
+  rm -vf *.tfstate*
+  cd ..
 
-    # Arret infra docker
-    logInfo "Destruction docker ..."
-    docker-compose down
-	docker volume prune -f
-	docker network prune -f
+  # Arret infra docker
+  logInfo "Destruction docker ..."
+  docker-compose down
+  docker volume prune -f
+  docker network prune -f
 else
-    printUsage
+  printUsage
 fi
