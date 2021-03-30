@@ -1,4 +1,4 @@
-version: "3.3"
+version: "3.7"
 
 volumes:
   influx-data:
@@ -8,7 +8,7 @@ volumes:
 
 services:
   traefik:
-    image: traefik:v2.2
+    image: traefik:v2.3
     logging:
       driver: loki
       options:
@@ -126,8 +126,10 @@ services:
     environment:
       - PGADMIN_DEFAULT_EMAIL=arig@arig.org
       - PGADMIN_DEFAULT_PASSWORD=admin
+      - PGADMIN_CONFIG_SERVER_MODE=False
+      - PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED=False
     volumes:
-      - ./conf/pgadmin4-servers.json:/pgadmin4/servers.json:z      
+      - ./conf/pgadmin4-servers.json:/pgadmin4/servers.json:z
       - ./conf/pgadmin4-pgpass:/pgadmin4/pgpass
     labels:
       - "traefik.enable=true"
