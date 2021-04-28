@@ -137,10 +137,11 @@ checkBinaries
 
 sglk-dev-stack stop
 
+
 if [ "$1" == "start" ] ; then
   # Démarrage infra docker
   docker-compose pull
-  docker-compose up -d
+  docker-compose up --detach --force-recreate --build
 
   waitPortsOpened
 
@@ -176,9 +177,7 @@ elif [ "$1" == "destroy" ] ; then
 
   # Arret infra docker
   logInfo "Destruction docker ..."
-  docker-compose down
-  docker volume prune -f
-  docker network prune -f
+  docker-compose down --remove-orphans
 else
   printUsage
 fi
