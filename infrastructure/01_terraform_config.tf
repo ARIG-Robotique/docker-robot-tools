@@ -1,6 +1,6 @@
 // Terraform configuration
 terraform {
-  required_version = ">= 0.14.3, < 0.15.0"
+  required_version = ">= 0.14.3, < 0.16.0"
 
   required_providers {
     grafana = {
