@@ -83,25 +83,13 @@ function checkBinaries {
   docker-compose version > /dev/null || logErrorAndExit "Docker compose doit être installé" 2
   logInfo " * docker-compose : [${LGREEN}OK${RESTORE}]"
 
-  if [[ $(docker plugin ls | grep loki | wc -l) -eq 0 ]] ; then
-      docker plugin install grafana/loki-docker-driver:latest --alias loki --grant-all-permissions
-  fi
-  logInfo " * docker log loki : [${LGREEN}OK${RESTORE}]"
-
   terraform version > /dev/null || logErrorAndExit "Terraform doit être installé" 3
   logInfo " * terraform : [${LGREEN}OK${RESTORE}]"
-
-  wait-port > /dev/null
-  [ $? -eq 127 ] && logErrorAndExit "wait-port doit être installé (https://github.com/dwmkerr/wait-port)" 4
-  logInfo " * wait-port : [${LGREEN}OK${RESTORE}]"
 
   logInfo "Version des binaires ..."
 
   logInfo " * Docker ..."
   docker version
-
-  logInfo " * Docker plugins ..."
-  docker plugin ls
 
   logInfo " * Docker compose ..."
   docker-compose version
@@ -112,7 +100,7 @@ function checkBinaries {
   terraform version
   if [[ "$(printf '%s\n' "${TF_REQUIRED}" "${TF_VERSION}" | sort -V | head -n1)" != "${TF_REQUIRED}" ]] ; then
     logWarn " /!\ Version minimal de Terraform requise : ${TF_REQUIRED}"
-    terraform-select-version
+    which terraform-select-version && terraform-select-version
   fi
 }
 
@@ -120,30 +108,16 @@ function printUsage {
   logErrorAndExit " Usage: ./run.sh start|stop|destroy" 99
 }
 
-function waitPortsOpened {
-  logInfo "Wait all services are up to install infrastructure ..."
-  wait-port -t 10000 80
-  wait-port -t 10000 81
-  wait-port -t 10000 5432
-  wait-port -t 10000 8086
-  wait-port -t 10000 3000
-  wait-port -t 10000 3100
-  wait-port -t 10000 8888
-}
-
 # Corps du programme #
 ######################
 checkBinaries
 
-sglk-dev-stack stop
-
-
 if [ "$1" == "start" ] ; then
+  which sglk-dev-stack && sglk-dev-stack stop
+
   # Démarrage infra docker
   docker-compose pull
-  docker-compose up --detach --force-recreate --build
-
-  waitPortsOpened
+  docker-compose up --detach --force-recreate
 
   # Provision de l'infra terraform
   cd infrastructure
@@ -170,7 +144,7 @@ elif [ "$1" == "destroy" ] ; then
   # Destruction infra
   logInfo "Destruction terraform ..."
   cd infrastructure
-  terraform destroy -force
+  terraform destroy -auto-approve
   rm -Rvf .terraform
   rm -vf *.tfstate*
   cd ..

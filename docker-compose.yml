@@ -1,157 +1,146 @@
-version: "3.7"
+version: "3.8"
+
+networks:
+  arig.local:
+    name: arig.local
+    driver: bridge
+    enable_ipv6: False
+    ipam:
+      config:
+        - subnet: 10.50.0.0/24
+    driver_opts:
+      com.docker.network.bridge.name: "arig.local"
+      com.docker.network.bridge.enable_icc: "true"
 
 volumes:
   influx-data:
+    name: influxdb.arig.local
   grafana-data:
+    name: grafana.arig.local
   pg-data:
-  loki-data:
+    name: pg.arig.local
 
 services:
   traefik:
-    image: traefik:v2.3
-    logging:
-      driver: loki
-      options:
-        loki-url: "http://loki.arig.local:3100/loki/api/v1/push"
-        loki-retries: "5"
-        loki-batch-size: "400"
+    container_name: traefik.arig.local
+    image: traefik:v2.4
+    restart: unless-stopped
+    networks:
+      arig.local:
+        ipv4_address: 10.50.0.10
+    command:
+      - --api.insecure=true
+      - --api.dashboard=true
+      - --providers.docker
+      - --providers.docker.exposedbydefault=false
+      - --entryPoints.web.address=:80
+      - --entryPoints.pg.address=:5432
     ports:
       - "80:80"
-      - "81:8080"
+      - "5432:5432"
+    labels:
+      - traefik.enable=true
+      - traefik.http.services.traefik.loadbalancer.server.port=8080
+      - traefik.http.routers.traefik.rule=Host(`traefik.arig.local`)
+      - traefik.http.routers.traefik.priority=1
+      - traefik.http.routers.traefik.entrypoints=web
     volumes:
-      - ./conf/traefik.yaml:/etc/traefik/traefik.yaml
       - /var/run/docker.sock:/var/run/docker.sock
 
-  loki:
-    image: grafana/loki:1.5.0
-    logging:
-      driver: loki
-      options:
-        loki-url: "http://loki.arig.local:3100/loki/api/v1/push"
-        loki-retries: "5"
-        loki-batch-size: "400"
-    ports:
-      - "3100:3100"
-    volumes:
-      - ./conf/loki-config.yaml:/etc/loki/local-config.yaml:z
-      - loki-data:/loki
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.loki.rule=Host(`loki.arig.local`)"
-    depends_on:
-      - traefik
-
   influxdb:
-    image: influxdb:1.7-alpine
-    logging:
-      driver: loki
-      options:
-        loki-url: "http://loki.arig.local:3100/loki/api/v1/push"
-        loki-retries: "5"
-        loki-batch-size: "400"
-    ports:
-      - "8086:8086"
+    container_name: influxdb.arig.local
+    image: influxdb:1.8-alpine
+    networks:
+      - arig.local
     volumes:
-      - ./conf/influxdb.conf:/etc/influxdb/influxdb.conf:z
-      - influx-data:/var/lib/influxdb:z
-    command: -config /etc/influxdb/influxdb.conf
+      - influx-data:/var/lib/influxdb
     labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.influxdb.rule=Host(`influxdb.arig.local`)"
+      - traefik.enable=true
+      - traefik.http.routers.influxdb.rule=Host(`influxdb.arig.local`)
+      - traefik.http.routers.influxdb.entrypoints=web
     depends_on:
       - traefik
 
   chronograf:
-    image: chronograf:1.7-alpine
-    logging:
-      driver: loki
-      options:
-        loki-url: "http://loki.arig.local:3100/loki/api/v1/push"
-        loki-retries: "5"
-        loki-batch-size: "400"
-    ports:
-      - "8888:8888"
+    container_name: chronograf.arig.local
+    image: chronograf:1.8-alpine
+    networks:
+      - arig.local
+    command:
+      - --influxdb-url=http://influxdb.arig.local:8086
     labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.chronograf.rule=Host(`chronograf.arig.local`)"
+      - traefik.enable=true
+      - traefik.http.routers.chronograf.rule=Host(`chronograf.arig.local`)
+      - traefik.http.routers.chronograf.entrypoints=web
     depends_on:
       - traefik
       - influxdb
 
   grafana:
-    image: grafana/grafana:7.0.1
-    logging:
-      driver: loki
-      options:
-        loki-url: "http://loki.arig.local:3100/loki/api/v1/push"
-        loki-retries: "5"
-        loki-batch-size: "400"
-    ports:
-      - "3000:3000"
+    container_name: grafana.arig.local
+    image: grafana/grafana:7.5.6
+    networks:
+      - arig.local
     volumes:
       - grafana-data:/var/lib/grafana
     labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.grafana.rule=Host(`grafana.arig.local`)"
+      - traefik.enable=true
+      - traefik.http.routers.grafana.rule=Host(`grafana.arig.local`)
+      - traefik.http.routers.grafana.entrypoints=web
     depends_on:
       - traefik
       - influxdb
 
   pg:
-    image: postgres:12-alpine
-    logging:
-      driver: loki
-      options:
-        loki-url: "http://loki.arig.local:3100/loki/api/v1/push"
-        loki-retries: "5"
-        loki-batch-size: "400"
-    ports:
-      - "5432:5432"
+    container_name: pg.arig.local
+    image: postgres:13-alpine
+    networks:
+      - arig.local
     environment:
       - DEBUG=true
       - POSTGRES_PASSWORD=postgres
     volumes:
       - pg-data:/var/lib/postgresql
+    labels:
+      - traefik.enable=true
+      - traefik.tcp.services.pg.loadbalancer.server.port=5432
+      - traefik.tcp.routers.pg.rule=HostSNI(`*`)
+      - traefik.tcp.routers.pg.entrypoints=pg
+      - traefik.tcp.routers.pg.service=pg
+    depends_on:
+      - traefik
 
   pgadmin:
+    container_name: pgadmin.arig.local
     image: dpage/pgadmin4
-    logging:
-      driver: loki
-      options:
-        loki-url: "http://loki.arig.local:3100/loki/api/v1/push"
-        loki-retries: "5"
-        loki-batch-size: "400"
-    ports:
-      - "0:80"
+    networks:
+      - arig.local
     environment:
       - PGADMIN_DEFAULT_EMAIL=arig@arig.org
       - PGADMIN_DEFAULT_PASSWORD=admin
       - PGADMIN_CONFIG_SERVER_MODE=False
       - PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED=False
     volumes:
-      - ./conf/pgadmin4-servers.json:/pgadmin4/servers.json:z
+      - ./conf/pgadmin4-servers.json:/pgadmin4/servers.json
       - ./conf/pgadmin4-pgpass:/pgadmin4/pgpass
     labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.pgadmin.rule=Host(`pgadmin.arig.local`)"
+      - traefik.enable=true
+      - traefik.http.routers.pgadmin.rule=Host(`pgadmin.arig.local`)
+      - traefik.http.routers.pgadmin.entrypoints=web
     depends_on:
       - pg
 
   reader:
+    container_name: reader.arig.local
     image: arig/robots-reader:dev
-    logging:
-      driver: loki
-      options:
-        loki-url: "http://loki.arig.local:3100/loki/api/v1/push"
-        loki-retries: "5"
-        loki-batch-size: "400"
-    ports:
-      - "0:4100"
+    networks:
+      - arig.local
     labels:
-      - "traefik.enable=true"
-      - "traefik.http.middlewares.reader-stripprefix.stripprefix.prefixes=/api"
-      - "traefik.http.routers.reader.rule=Host(`superviseur.arig.local`) && PathPrefix(`/api`)"
-      - "traefik.http.routers.reader.middlewares=reader-stripprefix@docker"
+      - traefik.enable=true
+      - traefik.http.middlewares.reader-stripprefix.stripprefix.prefixes=/api
+      - traefik.http.routers.reader.rule=Host(`superviseur.arig.local`) && PathPrefix(`/api`)
+      - traefik.http.routers.reader.middlewares=reader-stripprefix@docker
+      - traefik.http.routers.reader.entrypoints=web
     depends_on:
       - pg
       - grafana
@@ -160,17 +149,13 @@ services:
       - ../../java/robots/nerell-parent/nerell-simulator/logs:/logs/simulateur
 
   superviseur:
+    container_name: superviseur.arig.local
     image: arig/robots-supervisor:dev
-    logging:
-      driver: loki
-      options:
-        loki-url: "http://loki.arig.local:3100/loki/api/v1/push"
-        loki-retries: "5"
-        loki-batch-size: "400"
-    ports:
-      - "0:80"
+    networks:
+      - arig.local
     labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.superviseur.rule=Host(`superviseur.arig.local`)"
+      - traefik.enable=true
+      - traefik.http.routers.superviseur.rule=Host(`superviseur.arig.local`)
+      - traefik.http.routers.superviseur.entrypoints=web
     depends_on:
       - reader

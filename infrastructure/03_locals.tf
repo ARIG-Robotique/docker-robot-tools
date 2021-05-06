@@ -3,8 +3,7 @@
 locals {
   hosts = {
     "grafana"  = "grafana.arig.local"
-    "influxdb" = "influxdb.arig.local"
-    "postgres" = "localhost"
+    "postgres" = "pg.arig.local"
   }
 
   users = {
@@ -14,8 +13,6 @@ locals {
     "arig_password"     = "arig"
     "postgres_username" = "postgres"
     "postgres_password" = "postgres"
-    "root_username"     = "root"
-    "root_password"     = "root"
   }
 
   bddName = "robots"
