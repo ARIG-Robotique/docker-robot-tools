@@ -146,7 +146,8 @@ services:
       - grafana
       - influxdb
     volumes:
-      - ../../java/robots/nerell-parent/nerell-simulator/logs:/logs/simulateur
+      - ../../java/robots/nerell-parent/nerell-simulator/logs:/logs/simulateur-nerell
+      - ../../java/robots/odin-parent/odin-simulator/logs:/logs/simulateur-odin
 
   superviseur:
     container_name: superviseur.arig.local
