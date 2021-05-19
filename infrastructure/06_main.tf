@@ -17,7 +17,7 @@ resource "postgresql_database" "robots" {
 resource "grafana_data_source" "influxdb_robots" {
   type          = "influxdb"
   name          = "influxdb-robots"
-  url           = "http://influxdb.arig.local/"
+  url           = "http://influxdb.arig.local:8086/"
   username      = local.users["arig_username"]
   password      = local.users["arig_password"]
   database_name = local.bddName
@@ -28,7 +28,7 @@ resource "grafana_data_source" "influxdb_robots" {
 resource "grafana_data_source" "pg_robots" {
   type          = "postgres"
   name          = "pg-robots"
-  url           = "postgres.arig.local:5432"
+  url           = "pg.arig.local:5432"
   username      = postgresql_role.arig.name
   password      = postgresql_role.arig.password
   database_name = postgresql_database.robots.name
