@@ -50,11 +50,6 @@ resource "grafana_dashboard" "robot_tasks" {
   folder      = grafana_folder.robots.id
 }
 
-resource "grafana_dashboard" "robot_logs" {
-  config_json = file("dashboards/grafana-robot-logs.json")
-  folder      = grafana_folder.robots.id
-}
-
 resource "grafana_dashboard" "robot_match" {
   config_json = file("dashboards/grafana-robot-match.json")
   folder      = grafana_folder.robots.id
