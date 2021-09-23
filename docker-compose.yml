@@ -23,7 +23,7 @@ volumes:
 services:
   traefik:
     container_name: traefik.arig.local
-    image: traefik:v2.4
+    image: traefik:v2.5.3
     restart: unless-stopped
     networks:
       arig.local:
