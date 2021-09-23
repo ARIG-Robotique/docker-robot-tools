@@ -115,6 +115,10 @@ checkBinaries
 if [ "$1" == "start" ] ; then
   which sglk-dev-stack && sglk-dev-stack stop
 
+  # Récupération des IPs des robots
+  export NERELL_IP=$(getent ahosts nerell | awk '{ print $1 }' | uniq)
+  export ODIN_IP=$(getent ahosts odin | awk '{ print $1 }' | uniq)
+
   # Démarrage infra docker
   docker-compose pull
   docker-compose up --detach --force-recreate

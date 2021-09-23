@@ -148,6 +148,9 @@ services:
     volumes:
       - ../../java/robots/nerell-parent/nerell-simulator/logs:/logs/simulateur-nerell
       - ../../java/robots/odin-parent/odin-simulator/logs:/logs/simulateur-odin
+    extra_hosts:
+      - "nerell:${NERELL_IP}"
+      - "odin:${ODIN_IP}"
 
   superviseur:
     container_name: superviseur.arig.local
