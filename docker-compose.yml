@@ -132,7 +132,7 @@ services:
 
   reader:
     container_name: reader.arig.local
-    image: arig/robots-reader:dev
+    image: ghcr.io/arig-robotique/robots-reader
     networks:
       - arig.local
     labels:
@@ -155,7 +155,7 @@ services:
 
   superviseur:
     container_name: superviseur.arig.local
-    image: arig/robots-supervisor:dev
+    image: ghcr.io/arig-robotique/robots-supervisor
     networks:
       - arig.local
     labels:
