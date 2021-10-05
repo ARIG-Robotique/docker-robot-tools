@@ -78,7 +78,7 @@ services:
 
   grafana:
     container_name: grafana.arig.local
-    image: grafana/grafana:8.1.5
+    image: grafana/grafana:8.1.6
     networks:
       - arig.local
     volumes:
