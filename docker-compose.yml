@@ -155,7 +155,7 @@ services:
 
   superviseur:
     container_name: superviseur.arig.local
-    image: ghcr.io/arig-robotique/robots-supervisor
+    image: ghcr.io/arig-robotique/robots-supervisor-private
     networks:
       - arig.local
     labels:
