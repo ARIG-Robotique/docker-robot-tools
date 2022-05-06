@@ -1,0 +1,6 @@
+services:
+  reader:
+    image: ghcr.io/arig-robotique/robots-reader:local
+
+  superviseur:
+    image: ghcr.io/arig-robotique/robots-supervisor:local

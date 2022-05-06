@@ -120,8 +120,14 @@ if [ "$1" == "start" ] ; then
   export ODIN_IP=$(getent ahosts odin | awk '{ print $1 }' | uniq)
 
   # Démarrage infra docker
-  docker-compose pull
-  docker-compose up --detach --force-recreate
+  f="-f docker-compose.yml"
+  if [ "$2" == "dev" ] ; then
+    logInfo "Versions local de reader et superviseur"
+    f+=" -f docker-compose.local.yml"
+  fi
+
+  eval "docker-compose ${f} pull"
+  eval "docker-compose ${f} up --detach --force-recreate"
 
   # Provision de l'infra terraform
   cd infrastructure
