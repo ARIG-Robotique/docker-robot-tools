@@ -148,7 +148,9 @@ services:
     volumes:
       - ../../java/robots/nerell-parent/nerell-simulator/logs:/logs/simulateur-nerell
       - ../../java/robots/odin-parent/odin-simulator/logs:/logs/simulateur-odin
-      - ${HOME}/.ssh/known_hosts:/root/.ssh/known_hosts
+      - $SSH_AUTH_SOCK:/ssh-agent
+    environment:
+      SSH_AUTH_SOCK: /ssh-agent
     extra_hosts:
       - "nerell:${NERELL_IP}"
       - "odin:${ODIN_IP}"
