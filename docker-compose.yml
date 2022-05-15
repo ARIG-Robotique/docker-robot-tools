@@ -19,6 +19,8 @@ volumes:
     name: grafana.arig.local
   pg-data:
     name: pg.arig.local
+  reader-logs:
+    name: reader-logs.arig.local
 
 services:
   traefik:
@@ -146,8 +148,9 @@ services:
       - grafana
       - influxdb
     volumes:
-      - ../../java/robots/nerell-parent/nerell-simulator/logs:/logs/simulateur-nerell
-      - ../../java/robots/odin-parent/odin-simulator/logs:/logs/simulateur-odin
+      - reader-logs:/logs
+      - ../../java/robots/nerell-parent/nerell-simulator/logs:/logs-simulateur/nerell
+      - ../../java/robots/odin-parent/odin-simulator/logs:/logs-simulateur/odin
       - $SSH_AUTH_SOCK:/ssh-agent
     environment:
       SSH_AUTH_SOCK: /ssh-agent
