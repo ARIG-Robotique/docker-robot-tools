@@ -95,7 +95,7 @@ function checkBinaries {
   docker-compose version
 
   logInfo " * Terraform ..."
-  TF_REQUIRED="v0.14.3"
+  TF_REQUIRED="v1.0.3"
   TF_VERSION=$(terraform --version | head -1 | cut -d ' ' -f2)
   terraform version
   if [[ "$(printf '%s\n' "${TF_REQUIRED}" "${TF_VERSION}" | sort -V | head -n1)" != "${TF_REQUIRED}" ]] ; then
@@ -116,8 +116,14 @@ if [ "$1" == "start" ] ; then
   which sglk-dev-stack && sglk-dev-stack stop
 
   # Récupération des IPs des robots
-  export NERELL_IP=$(getent ahosts nerell | awk '{ print $1 }' | uniq)
-  export ODIN_IP=$(getent ahosts odin | awk '{ print $1 }' | uniq)
+  # Pour Mac : https://unix.stackexchange.com/questions/373309/mac-os-command-to-resolve-hostnames-like-getent-on-linux
+  if [ "$(uname)" == "Darwin" ]; then
+    export NERELL_IP=192.168.1.177
+    export ODIN_IP=192.168.1.178
+  else 
+    export NERELL_IP=$(getent ahosts nerell | awk '{ print $1 }' | uniq)
+    export ODIN_IP=$(getent ahosts odin | awk '{ print $1 }' | uniq)
+  fi
 
   # Démarrage infra docker
   f="-f docker-compose.yml"
@@ -144,7 +150,11 @@ if [ "$1" == "start" ] ; then
   cd ..
 
   # Lancement de l'IHM du superviseur
-  xdg-open http://superviseur.arig.local > /dev/null
+  if [ "$(uname)" == "Darwin" ]; then
+    open http://superviseur.arig.local > /dev/null
+  else 
+    xdg-open http://superviseur.arig.local > /dev/null
+  fi
 
 elif [ "$1" == "stop" ] ; then
   # Arret infra docker
