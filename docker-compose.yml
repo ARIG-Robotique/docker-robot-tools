@@ -51,7 +51,7 @@ services:
 
   influxdb:
     container_name: influxdb.arig.local
-    image: influxdb:1.8-alpine
+    image: influxdb:2.3-alpine
     networks:
       - arig.local
     volumes:
@@ -62,21 +62,6 @@ services:
       - traefik.http.routers.influxdb.entrypoints=web
     depends_on:
       - traefik
-
-  chronograf:
-    container_name: chronograf.arig.local
-    image: chronograf:1.8-alpine
-    networks:
-      - arig.local
-    command:
-      - --influxdb-url=http://influxdb.arig.local:8086
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.chronograf.rule=Host(`chronograf.arig.local`)
-      - traefik.http.routers.chronograf.entrypoints=web
-    depends_on:
-      - traefik
-      - influxdb
 
   grafana:
     container_name: grafana.arig.local
