@@ -134,7 +134,7 @@ services:
 
   reader:
     container_name: reader.arig.local
-    image: docker pull ghcr.io/arig-robotique/robots-reader:2022.05.15
+    image: ghcr.io/arig-robotique/robots-reader:2022.05.15
     networks:
       - arig.local
     labels:
