@@ -134,7 +134,7 @@ services:
 
   reader:
     container_name: reader.arig.local
-    image: ghcr.io/arig-robotique/robots-reader
+    image: docker pull ghcr.io/arig-robotique/robots-reader:2022.05.15
     networks:
       - arig.local
     labels:
@@ -160,7 +160,7 @@ services:
 
   superviseur:
     container_name: superviseur.arig.local
-    image: ghcr.io/arig-robotique/robots-supervisor-private
+    image: ghcr.io/arig-robotique/robots-supervisor:2022.05.15
     networks:
       - arig.local
     labels:
