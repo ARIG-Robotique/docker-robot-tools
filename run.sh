@@ -151,9 +151,9 @@ if [ "$1" == "start" ] ; then
 
   # Lancement de l'IHM du superviseur
   if [ "$(uname)" == "Darwin" ]; then
-    open http://superviseur.arig.local > /dev/null
+    open http://superviseur.arig.org > /dev/null
   else 
-    xdg-open http://superviseur.arig.local > /dev/null
+    xdg-open http://superviseur.arig.org > /dev/null
   fi
 
 elif [ "$1" == "stop" ] ; then

@@ -1,34 +1,34 @@
 version: "3.8"
 
 networks:
-  arig.local:
-    name: arig.local
+  arig.org:
+    name: arig.org
     driver: bridge
     enable_ipv6: False
     ipam:
       config:
         - subnet: 10.50.0.0/24
     driver_opts:
-      com.docker.network.bridge.name: "arig.local"
+      com.docker.network.bridge.name: "arig.org"
       com.docker.network.bridge.enable_icc: "true"
 
 volumes:
   influx-data:
-    name: influxdb.arig.local
+    name: influxdb.arig.org
   grafana-data:
-    name: grafana.arig.local
+    name: grafana.arig.org
   pg-data:
-    name: pg.arig.local
+    name: pg.arig.org
   reader-logs:
-    name: reader-logs.arig.local
+    name: reader-logs.arig.org
 
 services:
   traefik:
-    container_name: traefik.arig.local
+    container_name: traefik.arig.org
     image: traefik:v2.5.3
     restart: unless-stopped
     networks:
-      arig.local:
+      arig.org:
         ipv4_address: 10.50.0.10
     command:
       - --api.insecure=true
@@ -43,46 +43,46 @@ services:
     labels:
       - traefik.enable=true
       - traefik.http.services.traefik.loadbalancer.server.port=8080
-      - traefik.http.routers.traefik.rule=Host(`traefik.arig.local`)
+      - traefik.http.routers.traefik.rule=Host(`traefik.arig.org`)
       - traefik.http.routers.traefik.priority=1
       - traefik.http.routers.traefik.entrypoints=web
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
 
   influxdb:
-    container_name: influxdb.arig.local
+    container_name: influxdb.arig.org
     image: influxdb:2.3-alpine
     networks:
-      - arig.local
+      - arig.org
     volumes:
       - influx-data:/var/lib/influxdb
     labels:
       - traefik.enable=true
-      - traefik.http.routers.influxdb.rule=Host(`influxdb.arig.local`)
+      - traefik.http.routers.influxdb.rule=Host(`influxdb.arig.org`)
       - traefik.http.routers.influxdb.entrypoints=web
     depends_on:
       - traefik
 
   grafana:
-    container_name: grafana.arig.local
+    container_name: grafana.arig.org
     image: grafana/grafana:8.1.6
     networks:
-      - arig.local
+      - arig.org
     volumes:
       - grafana-data:/var/lib/grafana
     labels:
       - traefik.enable=true
-      - traefik.http.routers.grafana.rule=Host(`grafana.arig.local`)
+      - traefik.http.routers.grafana.rule=Host(`grafana.arig.org`)
       - traefik.http.routers.grafana.entrypoints=web
     depends_on:
       - traefik
       - influxdb
 
   pg:
-    container_name: pg.arig.local
+    container_name: pg.arig.org
     image: postgres:14-alpine
     networks:
-      - arig.local
+      - arig.org
     environment:
       - DEBUG=true
       - POSTGRES_PASSWORD=postgres
@@ -98,10 +98,10 @@ services:
       - traefik
 
   pgadmin:
-    container_name: pgadmin.arig.local
+    container_name: pgadmin.arig.org
     image: dpage/pgadmin4
     networks:
-      - arig.local
+      - arig.org
     environment:
       - PGADMIN_DEFAULT_EMAIL=arig@arig.org
       - PGADMIN_DEFAULT_PASSWORD=admin
@@ -112,20 +112,20 @@ services:
       - ./conf/pgadmin4-pgpass:/pgadmin4/pgpass
     labels:
       - traefik.enable=true
-      - traefik.http.routers.pgadmin.rule=Host(`pgadmin.arig.local`)
+      - traefik.http.routers.pgadmin.rule=Host(`pgadmin.arig.org`)
       - traefik.http.routers.pgadmin.entrypoints=web
     depends_on:
       - pg
 
   reader:
-    container_name: reader.arig.local
+    container_name: reader.arig.org
     image: ghcr.io/arig-robotique/robots-reader:2022.05.15
     networks:
-      - arig.local
+      - arig.org
     labels:
       - traefik.enable=true
       - traefik.http.middlewares.reader-stripprefix.stripprefix.prefixes=/api
-      - traefik.http.routers.reader.rule=Host(`superviseur.arig.local`) && PathPrefix(`/api`)
+      - traefik.http.routers.reader.rule=Host(`superviseur.arig.org`) && PathPrefix(`/api`)
       - traefik.http.routers.reader.middlewares=reader-stripprefix@docker
       - traefik.http.routers.reader.entrypoints=web
     depends_on:
@@ -144,13 +144,13 @@ services:
       - "odin:${ODIN_IP}"
 
   superviseur:
-    container_name: superviseur.arig.local
+    container_name: superviseur.arig.org
     image: ghcr.io/arig-robotique/robots-supervisor:2022.05.15
     networks:
-      - arig.local
+      - arig.org
     labels:
       - traefik.enable=true
-      - traefik.http.routers.superviseur.rule=Host(`superviseur.arig.local`)
+      - traefik.http.routers.superviseur.rule=Host(`superviseur.arig.org`)
       - traefik.http.routers.superviseur.entrypoints=web
     depends_on:
       - reader

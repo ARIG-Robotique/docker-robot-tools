@@ -18,7 +18,7 @@ Il faut également ajouter (au préalable) une redirection DNS wildcard (ie dnsm
 le conteneur de Traefik (ip 10.50.0.10) :
 
 ```
-address=/.arig.local/10.50.0.10
+address=/.arig.org/10.50.0.10
 ```
 
 Enjoy!

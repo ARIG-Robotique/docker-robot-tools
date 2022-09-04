@@ -2,8 +2,8 @@
 ###############################################################
 locals {
   hosts = {
-    "grafana"  = "grafana.arig.local"
-    "postgres" = "pg.arig.local"
+    "grafana"  = "grafana.arig.org"
+    "postgres" = "pg.arig.org"
   }
 
   users = {
