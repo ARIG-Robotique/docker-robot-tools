@@ -145,7 +145,7 @@ services:
 
   superviseur:
     container_name: superviseur.arig.org
-    image: ghcr.io/arig-robotique/robots-supervisor:2022.05.15
+    image: ghcr.io/arig-robotique/robots-supervisor:2022.09.05
     networks:
       - arig.org
     labels:
