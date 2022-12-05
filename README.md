@@ -15,10 +15,10 @@ Ensuite il suffit de lancer le script "run.sh" avec un des arguments suivant :
 Optionellement `.run.sh start dev` lancera la stack avec les versions `local` de robots-reader et robots-supervisor.
 
 Il faut également ajouter (au préalable) une redirection DNS wildcard (ie dnsmasq) sur le
-le conteneur de Traefik (ip 10.50.0.10) :
+le conteneur de Traefik (ip 10.60.0.10) :
 
 ```
-address=/.arig.org/10.50.0.10
+address=/.arig.org/10.60.0.10
 ```
 
 Enjoy!

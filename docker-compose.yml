@@ -7,7 +7,7 @@ networks:
     enable_ipv6: False
     ipam:
       config:
-        - subnet: 10.50.0.0/24
+        - subnet: 10.60.0.0/24
     driver_opts:
       com.docker.network.bridge.name: "arig.org"
       com.docker.network.bridge.enable_icc: "true"
@@ -29,7 +29,7 @@ services:
     restart: unless-stopped
     networks:
       arig.org:
-        ipv4_address: 10.50.0.10
+        ipv4_address: 10.60.0.10
     command:
       - --api.insecure=true
       - --api.dashboard=true
