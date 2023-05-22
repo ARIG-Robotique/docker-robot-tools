@@ -126,7 +126,7 @@ services:
 
   reader:
     container_name: reader.arig.org
-    image: ghcr.io/arig-robotique/robots-reader:2022.09.05
+    image: ghcr.io/arig-robotique/robots-reader:2023.05.22
     networks:
       - arig.org
     labels:
