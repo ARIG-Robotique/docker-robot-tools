@@ -54,6 +54,13 @@ services:
     image: influxdb:2.7.1-alpine
     networks:
       - arig.org
+    environment:
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+      - DOCKER_INFLUXDB_INIT_USERNAME=admin
+      - DOCKER_INFLUXDB_INIT_PASSWORD=admin4ever
+      - DOCKER_INFLUXDB_INIT_ORG=arig
+      - DOCKER_INFLUXDB_INIT_BUCKET=robots
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=super-token-connu-pour-auth
     volumes:
       - influx-data:/var/lib/influxdb
     labels:
