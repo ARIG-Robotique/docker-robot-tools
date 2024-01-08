@@ -112,18 +112,17 @@ function printUsage {
 ######################
 checkBinaries
 
+# Récupération des IPs des robots
+if [ "$(uname)" == "Darwin" ]; then
+  export NERELL_IP=$(cat /etc/hosts | grep nerell | grep -v '#' | awk '{ print $1 }' | uniq)
+  export ODIN_IP=$(cat /etc/hosts | grep odin | grep -v '#' | awk '{ print $1 }' | uniq)
+else
+  export NERELL_IP=$(getent ahosts nerell | awk '{ print $1 }' | uniq)
+  export ODIN_IP=$(getent ahosts odin | awk '{ print $1 }' | uniq)
+fi
+
 if [ "$1" == "start" ] ; then
   which sglk-dev-stack && sglk-dev-stack stop
-
-  # Récupération des IPs des robots
-  # Pour Mac : https://unix.stackexchange.com/questions/373309/mac-os-command-to-resolve-hostnames-like-getent-on-linux
-  if [ "$(uname)" == "Darwin" ]; then
-    export NERELL_IP=192.168.1.177
-    export ODIN_IP=192.168.1.178
-  else 
-    export NERELL_IP=$(getent ahosts nerell | awk '{ print $1 }' | uniq)
-    export ODIN_IP=$(getent ahosts odin | awk '{ print $1 }' | uniq)
-  fi
 
   # Démarrage infra docker
   f="-f docker-compose.yml"
