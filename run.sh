@@ -122,6 +122,7 @@ else
 fi
 
 if [ "$1" == "start" ] ; then
+  which sglk-run && sglk-run stop --force
   which sglk-dev-stack && sglk-dev-stack stop
 
   # Démarrage infra docker
