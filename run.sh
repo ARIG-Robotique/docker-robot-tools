@@ -116,9 +116,15 @@ checkBinaries
 if [ "$(uname)" == "Darwin" ]; then
   export NERELL_IP=$(cat /etc/hosts | grep nerell | grep -v '#' | awk '{ print $1 }' | uniq)
   export ODIN_IP=$(cat /etc/hosts | grep odin | grep -v '#' | awk '{ print $1 }' | uniq)
+  export PAMI_TRIANGLE_IP=$(cat /etc/hosts | grep pami-triangle | grep -v '#' | awk '{ print $1 }' | uniq)
+  export PAMI_CARRE_IP=$(cat /etc/hosts | grep pami-carre | grep -v '#' | awk '{ print $1 }' | uniq)
+  export PAMI_ROND_IP=$(cat /etc/hosts | grep pami-rond | grep -v '#' | awk '{ print $1 }' | uniq)
 else
   export NERELL_IP=$(getent ahosts nerell | awk '{ print $1 }' | uniq)
   export ODIN_IP=$(getent ahosts odin | awk '{ print $1 }' | uniq)
+  export PAMI_TRIANGLE_IP=$(getent ahosts pami-triangle | awk '{ print $1 }' | uniq)
+  export PAMI_CARRE_IP=$(getent ahosts pami-carre | awk '{ print $1 }' | uniq)
+  export PAMI_ROND_IP=$(getent ahosts pami-rond | awk '{ print $1 }' | uniq)
 fi
 
 if [ "$1" == "start" ] ; then

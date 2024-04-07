@@ -149,6 +149,9 @@ services:
     extra_hosts:
       - "nerell:${NERELL_IP}"
       - "odin:${ODIN_IP}"
+      - "pami-triangle:${PAMI_TRIANGLE_IP}"
+      - "pami-carre:${PAMI_CARRE_IP}"
+      - "pami-rond:${PAMI_ROND_IP}"
 
   superviseur:
     container_name: superviseur.arig.org
