@@ -25,7 +25,7 @@ volumes:
 services:
   traefik:
     container_name: traefik.arig.org
-    image: traefik:v2.10.1
+    image: traefik:v2.11.0
     restart: unless-stopped
     networks:
       arig.org:
@@ -51,7 +51,7 @@ services:
 
   influxdb:
     container_name: influxdb.arig.org
-    image: influxdb:2.7.1-alpine
+    image: influxdb:2.7.5-alpine
     networks:
       - arig.org
     environment:
@@ -72,7 +72,7 @@ services:
 
   grafana:
     container_name: grafana.arig.org
-    image: grafana/grafana-oss:9.5.2
+    image: grafana/grafana-oss:10.4.1
     networks:
       - arig.org
     volumes:

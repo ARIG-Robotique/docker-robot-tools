@@ -5,12 +5,12 @@ terraform {
   required_providers {
     grafana = {
       source  = "grafana/grafana"
-      version = "1.40.1"
+      version = "2.15.0"
     }
 
     postgresql = {
       source  = "cyrilgdn/postgresql"
-      version = "1.19.0"
+      version = "1.22.0"
     }
   }
 }

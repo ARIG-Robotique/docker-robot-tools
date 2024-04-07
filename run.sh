@@ -133,7 +133,7 @@ if [ "$1" == "start" ] ; then
   fi
 
   eval "docker-compose ${f} pull"
-  eval "docker-compose ${f} up --detach --force-recreate"
+  eval "docker-compose ${f} up --detach"
 
   # Provision de l'infra terraform
   cd infrastructure
@@ -171,7 +171,8 @@ elif [ "$1" == "destroy" ] ; then
 
   # Arret infra docker
   logInfo "Destruction docker ..."
-  docker-compose down --remove-orphans
+  docker-compose down --remove-orphans --volumes
+
 else
   printUsage
 fi

@@ -9,11 +9,11 @@ resource "grafana_data_source" "influxdb_robots" {
     dbName = local.bddName
     tlsSkipVerify = true
     httpMode = "GET"
+  })
+  http_headers = {
     httpHeaderName1 = "Authorization"
-  })
-  secure_json_data_encoded = jsonencode({
     httpHeaderValue1 = "Token ${local.users.influxdb_auth_token}"
-  })
+  }
 }
 
 resource "grafana_data_source" "influxdb_robots_flux" {
@@ -34,7 +34,7 @@ resource "grafana_data_source" "influxdb_robots_flux" {
 
 # Data source PostgreSQL
 resource "grafana_data_source" "pg_robots" {
-  type          = "postgres"
+  type          = "grafana-postgresql-datasource"
   name          = "pg-robots"
   url           = "${local.hosts.postgres}:5432"
   
