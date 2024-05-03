@@ -3,7 +3,10 @@
     "list": [
       {
         "builtIn": 1,
-        "datasource": "-- Grafana --",
+        "datasource": {
+          "type": "datasource",
+          "uid": "grafana"
+        },
         "enable": true,
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
@@ -20,18 +23,16 @@
   },
   "description": "Analyse graphique des datas robots",
   "editable": true,
-  "gnetId": null,
+  "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
-  "id": null,
-  "iteration": 1633465568973,
+  "id": 5,
   "links": [],
   "panels": [
     {
       "collapsed": false,
-      "datasource": null,
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
+      "datasource": {
+        "type": "influxdb",
+        "uid": "adkjdeslru7eoa"
       },
       "gridPos": {
         "h": 1,
@@ -41,18 +42,32 @@
       },
       "id": 19,
       "panels": [],
-      "repeat": null,
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "adkjdeslru7eoa"
+          },
+          "refId": "A"
+        }
+      ],
       "title": "Odometrie",
       "type": "row"
     },
     {
-      "datasource": "influxdb-robots",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "cdkjdesjtx1q8b"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -64,6 +79,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -97,7 +113,38 @@
           },
           "unit": "short"
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "droit"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "gauche"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 8,
@@ -106,7 +153,6 @@
         "y": 1
       },
       "id": 13,
-      "links": [],
       "options": {
         "legend": {
           "calcs": [
@@ -115,16 +161,22 @@
             "min"
           ],
           "displayMode": "table",
-          "placement": "bottom"
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "pluginVersion": "8.1.6",
       "targets": [
         {
           "alias": "$col",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "cdkjdesjtx1q8b"
+          },
           "dsType": "influxdb",
           "groupBy": [
             {
@@ -143,6 +195,7 @@
           "measurement": "encodeurs",
           "orderByTime": "ASC",
           "policy": "default",
+          "query": "from(bucket: \"robots\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"encodeurs\")\n  |> filter(fn: (r) => r[\"robot\"] == \"${robot_name}\")\n  |> filter(fn: (r) => r[\"name\"] == \"two_wheels_encoders\")\n  |> filter(fn: (r) => r[\"_field\"] == \"gauche\" or r[\"_field\"] == \"droit\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> keep(columns: [\"_time\", \"_field\", \"_value\"])",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -198,19 +251,23 @@
           ]
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Encodeurs : Roues propulsion gauche / droite",
       "type": "timeseries"
     },
     {
-      "datasource": "influxdb-robots",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "cdkjdesjtx1q8b"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -222,6 +279,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -255,7 +313,38 @@
           },
           "unit": "short"
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "distance"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "orientation"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 9,
@@ -264,7 +353,6 @@
         "y": 9
       },
       "id": 15,
-      "links": [],
       "options": {
         "legend": {
           "calcs": [
@@ -273,16 +361,22 @@
             "min"
           ],
           "displayMode": "table",
-          "placement": "bottom"
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "pluginVersion": "8.1.6",
       "targets": [
         {
           "alias": "$col",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "cdkjdesjtx1q8b"
+          },
           "dsType": "influxdb",
           "groupBy": [
             {
@@ -301,6 +395,7 @@
           "measurement": "encodeurs",
           "orderByTime": "ASC",
           "policy": "default",
+          "query": "from(bucket: \"robots\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"encodeurs\")\n  |> filter(fn: (r) => r[\"robot\"] == \"${robot_name}\")\n  |> filter(fn: (r) => r[\"_field\"] == \"distance\" or r[\"_field\"] == \"orientation\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> keep(columns: [\"_time\", \"_field\", \"_value\"])",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -356,17 +451,14 @@
           ]
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Encodeurs : Distance / Orientation propulsion",
       "type": "timeseries"
     },
     {
       "collapsed": false,
-      "datasource": null,
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
+      "datasource": {
+        "type": "influxdb",
+        "uid": "adkjdeslru7eoa"
       },
       "gridPos": {
         "h": 1,
@@ -376,17 +468,32 @@
       },
       "id": 31,
       "panels": [],
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "adkjdeslru7eoa"
+          },
+          "refId": "A"
+        }
+      ],
       "title": "Commande moteur",
       "type": "row"
     },
     {
-      "datasource": null,
+      "datasource": {
+        "type": "influxdb",
+        "uid": "cdkjdesjtx1q8b"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -398,6 +505,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -435,7 +543,38 @@
           },
           "unit": "short"
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "mot_d"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "mot_g"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 9,
@@ -444,7 +583,6 @@
         "y": 19
       },
       "id": 33,
-      "links": [],
       "options": {
         "legend": {
           "calcs": [
@@ -453,16 +591,22 @@
             "min"
           ],
           "displayMode": "table",
-          "placement": "bottom"
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "pluginVersion": "8.1.6",
       "targets": [
         {
           "alias": "$col",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "cdkjdesjtx1q8b"
+          },
           "groupBy": [
             {
               "params": [
@@ -480,6 +624,7 @@
           "measurement": "asservissement",
           "orderByTime": "ASC",
           "policy": "default",
+          "query": "from(bucket: \"robots\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"asservissement\")\n  |> filter(fn: (r) => r[\"robot\"] == \"${robot_name}\")\n  |> filter(fn: (r) => r[\"name\"] == \"polaire\")\n  |> filter(fn: (r) => r[\"_field\"] == \"mot_d\" or r[\"_field\"] == \"mot_g\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> keep(columns: [\"_time\", \"_field\", \"_value\"])",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -535,17 +680,14 @@
           ]
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Commande droite / gauche",
       "type": "timeseries"
     },
     {
       "collapsed": false,
-      "datasource": null,
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
+      "datasource": {
+        "type": "influxdb",
+        "uid": "adkjdeslru7eoa"
       },
       "gridPos": {
         "h": 1,
@@ -555,12 +697,23 @@
       },
       "id": 17,
       "panels": [],
-      "repeat": null,
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "adkjdeslru7eoa"
+          },
+          "refId": "A"
+        }
+      ],
       "title": "Rampes vitesse",
       "type": "row"
     },
     {
-      "datasource": "influxdb-robots",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "cdkjdesjtx1q8b"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -568,8 +721,16 @@
           },
           "custom": {
             "fillOpacity": 70,
-            "lineWidth": 0
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineWidth": 0,
+            "spanNulls": false
           },
+          "fieldMinMax": false,
           "links": [],
           "mappings": [],
           "thresholds": {
@@ -595,29 +756,35 @@
         "y": 29
       },
       "id": 43,
-      "links": [],
       "options": {
-        "alignValue": "left",
+        "alignValue": "center",
         "legend": {
           "displayMode": "list",
-          "placement": "bottom"
+          "placement": "bottom",
+          "showLegend": true
         },
         "mergeValues": true,
         "rowHeight": 0.9,
         "showValue": "auto",
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "pluginVersion": "8.1.6",
       "targets": [
         {
           "alias": "$col",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "cdkjdesjtx1q8b"
+          },
           "dsType": "influxdb",
           "groupBy": [],
           "measurement": "ramp_vitesse",
           "orderByTime": "ASC",
           "policy": "default",
+          "query": "from(bucket: \"robots\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"ramp_vitesse\")\n  |> filter(fn: (r) => r[\"robot\"] == \"Nerell\")\n  |> filter(fn: (r) => r[\"name\"] == \"distance\")\n  |> filter(fn: (r) => r[\"_field\"] == \"bypass\")\n  |> keep(columns: [\"_time\", \"_value\"])",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -645,13 +812,14 @@
           ]
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Distance : Bypass rampe",
       "type": "state-timeline"
     },
     {
-      "datasource": "influxdb-robots",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "cdkjdesjtx1q8b"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -659,7 +827,14 @@
           },
           "custom": {
             "fillOpacity": 70,
-            "lineWidth": 0
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineWidth": 0,
+            "spanNulls": false
           },
           "links": [],
           "mappings": [],
@@ -686,29 +861,35 @@
         "y": 29
       },
       "id": 44,
-      "links": [],
       "options": {
-        "alignValue": "left",
+        "alignValue": "center",
         "legend": {
           "displayMode": "list",
-          "placement": "bottom"
+          "placement": "bottom",
+          "showLegend": true
         },
         "mergeValues": true,
         "rowHeight": 0.9,
         "showValue": "auto",
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "pluginVersion": "8.1.6",
       "targets": [
         {
           "alias": "$col",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "cdkjdesjtx1q8b"
+          },
           "dsType": "influxdb",
           "groupBy": [],
           "measurement": "ramp_vitesse",
           "orderByTime": "ASC",
           "policy": "default",
+          "query": "from(bucket: \"robots\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"ramp_vitesse\")\n  |> filter(fn: (r) => r[\"robot\"] == \"Nerell\")\n  |> filter(fn: (r) => r[\"name\"] == \"orientation\")\n  |> filter(fn: (r) => r[\"_field\"] == \"bypass\")\n  |> keep(columns: [\"_time\", \"_value\"])",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -736,31 +917,39 @@
           ]
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Orientation : Bypass rampe",
       "type": "state-timeline"
     },
     {
-      "datasource": "influxdb-robots",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "cdkjdesjtx1q8b"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
             "drawStyle": "line",
-            "fillOpacity": 35,
-            "gradientMode": "none",
+            "fillOpacity": 20,
+            "gradientMode": "opacity",
             "hideFrom": {
               "legend": false,
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
+            "lineStyle": {
+              "fill": "solid"
+            },
             "lineWidth": 2,
             "pointSize": 5,
             "scaleDistribution": {
@@ -797,13 +986,13 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "consigne neg"
+              "options": "currentVitesse"
             },
             "properties": [
               {
                 "id": "color",
                 "value": {
-                  "fixedColor": "super-light-green",
+                  "fixedColor": "red",
                   "mode": "fixed"
                 }
               }
@@ -812,45 +1001,18 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "consigne pos"
+              "options": "consigne_pos"
             },
             "properties": [
               {
                 "id": "color",
                 "value": {
-                  "fixedColor": "super-light-green",
+                  "fixedColor": "semi-dark-blue",
                   "mode": "fixed"
                 }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "vitesseCourante théorique"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "super-light-blue",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "consigne pos"
-            },
-            "properties": [
-              {
-                "id": "custom.fillBelowTo",
-                "value": "consigne neg"
               },
               {
-                "id": "custom.lineWidth",
+                "id": "custom.fillOpacity",
                 "value": 0
               }
             ]
@@ -858,11 +1020,18 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "consigne neg"
+              "options": "consigne_neg"
             },
             "properties": [
               {
-                "id": "custom.lineWidth",
+                "id": "color",
+                "value": {
+                  "fixedColor": "semi-dark-blue",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "custom.fillOpacity",
                 "value": 0
               }
             ]
@@ -876,7 +1045,6 @@
         "y": 33
       },
       "id": 1,
-      "links": [],
       "options": {
         "legend": {
           "calcs": [
@@ -885,16 +1053,24 @@
             "min"
           ],
           "displayMode": "table",
-          "placement": "bottom"
+          "placement": "bottom",
+          "showLegend": true,
+          "sortBy": "Name",
+          "sortDesc": true
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "pluginVersion": "8.1.6",
       "targets": [
         {
           "alias": "$col",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "cdkjdesjtx1q8b"
+          },
           "dsType": "influxdb",
           "groupBy": [
             {
@@ -907,7 +1083,216 @@
           "measurement": "ramp_vitesse",
           "orderByTime": "ASC",
           "policy": "default",
+          "query": "from(bucket: \"robots\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"ramp_vitesse\")\n  |> filter(fn: (r) => r[\"robot\"] == \"Nerell\")\n  |> filter(fn: (r) => r[\"name\"] == \"distance\")\n  |> filter(fn: (r) => r[\"_field\"] == \"consigne\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> rename(columns: { _value: \"consigne_pos\" })\n  |> keep(columns: [\"_time\", \"consigne_pos\"])\n\n",
           "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "consigne"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              },
+              {
+                "params": [
+                  "consigne pos"
+                ],
+                "type": "alias"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "currentVitesse"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              },
+              {
+                "params": [
+                  " / 3"
+                ],
+                "type": "math"
+              },
+              {
+                "params": [
+                  "vitesseCourante théorique"
+                ],
+                "type": "alias"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "consigne"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              },
+              {
+                "params": [
+                  "* -1"
+                ],
+                "type": "math"
+              },
+              {
+                "params": [
+                  "consigne neg"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "robot",
+              "operator": "=~",
+              "value": "/^$robot_name$/"
+            },
+            {
+              "condition": "AND",
+              "key": "name",
+              "operator": "=",
+              "value": "distance"
+            }
+          ]
+        },
+        {
+          "alias": "$col",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "cdkjdesjtx1q8b"
+          },
+          "dsType": "influxdb",
+          "groupBy": [
+            {
+              "params": [
+                "20ms"
+              ],
+              "type": "time"
+            }
+          ],
+          "hide": false,
+          "measurement": "ramp_vitesse",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "from(bucket: \"robots\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"ramp_vitesse\")\n  |> filter(fn: (r) => r[\"robot\"] == \"Nerell\")\n  |> filter(fn: (r) => r[\"name\"] == \"distance\")\n  |> filter(fn: (r) => r[\"_field\"] == \"currentVitesse\")\n  |> map(fn: (r) => ({ _time: r._time, _value: r._value / 3.0 }))\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> rename(columns: { _value: \"currentVitesse\" })\n  |> keep(columns: [\"_time\", \"currentVitesse\"])\n",
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "consigne"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              },
+              {
+                "params": [
+                  "consigne pos"
+                ],
+                "type": "alias"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "currentVitesse"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              },
+              {
+                "params": [
+                  " / 3"
+                ],
+                "type": "math"
+              },
+              {
+                "params": [
+                  "vitesseCourante théorique"
+                ],
+                "type": "alias"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "consigne"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              },
+              {
+                "params": [
+                  "* -1"
+                ],
+                "type": "math"
+              },
+              {
+                "params": [
+                  "consigne neg"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "robot",
+              "operator": "=~",
+              "value": "/^$robot_name$/"
+            },
+            {
+              "condition": "AND",
+              "key": "name",
+              "operator": "=",
+              "value": "distance"
+            }
+          ]
+        },
+        {
+          "alias": "$col",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "cdkjdesjtx1q8b"
+          },
+          "dsType": "influxdb",
+          "groupBy": [
+            {
+              "params": [
+                "20ms"
+              ],
+              "type": "time"
+            }
+          ],
+          "hide": false,
+          "measurement": "ramp_vitesse",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "from(bucket: \"robots\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"ramp_vitesse\")\n  |> filter(fn: (r) => r[\"robot\"] == \"Nerell\")\n  |> filter(fn: (r) => r[\"name\"] == \"distance\")\n  |> filter(fn: (r) => r[\"_field\"] == \"consigne\")\n  |> map(fn: (r) => ({ _time: r._time, _value: r._value * -1.0 }))\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> rename(columns: { _value: \"consigne_neg\" })\n  |> keep(columns: [\"_time\", \"consigne_neg\"])\n",
+          "refId": "C",
           "resultFormat": "time_series",
           "select": [
             [
@@ -992,30 +1377,35 @@
           ]
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Distance : Vitesse théorique",
       "type": "timeseries"
     },
     {
-      "datasource": "influxdb-robots",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "cdkjdesjtx1q8b"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
             "drawStyle": "line",
             "fillOpacity": 35,
-            "gradientMode": "none",
+            "gradientMode": "opacity",
             "hideFrom": {
               "legend": false,
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 2,
             "pointSize": 5,
@@ -1053,60 +1443,18 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "consigne neg"
+              "options": "consigne_pos"
             },
             "properties": [
               {
                 "id": "color",
                 "value": {
-                  "fixedColor": "super-light-green",
+                  "fixedColor": "semi-dark-blue",
                   "mode": "fixed"
                 }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "consigne pos"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "super-light-green",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "vitesseCourante théorique"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "super-light-blue",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "consigne pos"
-            },
-            "properties": [
-              {
-                "id": "custom.fillBelowTo",
-                "value": "consigne neg"
               },
               {
-                "id": "custom.lineWidth",
+                "id": "custom.fillOpacity",
                 "value": 0
               }
             ]
@@ -1114,12 +1462,34 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "consigne neg"
+              "options": "consigne_neg"
             },
             "properties": [
               {
-                "id": "custom.lineWidth",
+                "id": "color",
+                "value": {
+                  "fixedColor": "semi-dark-blue",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "custom.fillOpacity",
                 "value": 0
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "currentVitesse"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "red",
+                  "mode": "fixed"
+                }
               }
             ]
           }
@@ -1132,7 +1502,6 @@
         "y": 33
       },
       "id": 2,
-      "links": [],
       "options": {
         "legend": {
           "calcs": [
@@ -1141,16 +1510,22 @@
             "min"
           ],
           "displayMode": "table",
-          "placement": "bottom"
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "pluginVersion": "8.1.6",
       "targets": [
         {
           "alias": "$col",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "cdkjdesjtx1q8b"
+          },
           "dsType": "influxdb",
           "groupBy": [
             {
@@ -1169,7 +1544,228 @@
           "measurement": "ramp_vitesse",
           "orderByTime": "ASC",
           "policy": "default",
+          "query": "from(bucket: \"robots\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"ramp_vitesse\")\n  |> filter(fn: (r) => r[\"robot\"] == \"${robot_name}\")\n  |> filter(fn: (r) => r[\"name\"] == \"orientation\")\n  |> filter(fn: (r) => r[\"_field\"] == \"consigne\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> rename(columns: { _value: \"consigne_pos\" })\n  |> keep(columns: [\"_time\", \"consigne_pos\"])",
           "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "consigne"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              },
+              {
+                "params": [
+                  "consigne pos"
+                ],
+                "type": "alias"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "currentVitesse"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              },
+              {
+                "params": [
+                  " / 6"
+                ],
+                "type": "math"
+              },
+              {
+                "params": [
+                  "vitesseCourante théorique"
+                ],
+                "type": "alias"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "consigne"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              },
+              {
+                "params": [
+                  "* -1"
+                ],
+                "type": "math"
+              },
+              {
+                "params": [
+                  "consigne neg"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "robot",
+              "operator": "=~",
+              "value": "/^$robot_name$/"
+            },
+            {
+              "condition": "AND",
+              "key": "name",
+              "operator": "=",
+              "value": "orientation"
+            }
+          ]
+        },
+        {
+          "alias": "$col",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "cdkjdesjtx1q8b"
+          },
+          "dsType": "influxdb",
+          "groupBy": [
+            {
+              "params": [
+                "20ms"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "ramp_vitesse",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "from(bucket: \"robots\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"ramp_vitesse\")\n  |> filter(fn: (r) => r[\"robot\"] == \"${robot_name}\")\n  |> filter(fn: (r) => r[\"name\"] == \"orientation\")\n  |> filter(fn: (r) => r[\"_field\"] == \"currentVitesse\")\n  |> map(fn: (r) => ({ _time: r._time, _value: r._value / 6.0 }))\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> rename(columns: { _value: \"currentVitesse\" })\n  |> keep(columns: [\"_time\", \"currentVitesse\"])",
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "consigne"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              },
+              {
+                "params": [
+                  "consigne pos"
+                ],
+                "type": "alias"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "currentVitesse"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              },
+              {
+                "params": [
+                  " / 6"
+                ],
+                "type": "math"
+              },
+              {
+                "params": [
+                  "vitesseCourante théorique"
+                ],
+                "type": "alias"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "consigne"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              },
+              {
+                "params": [
+                  "* -1"
+                ],
+                "type": "math"
+              },
+              {
+                "params": [
+                  "consigne neg"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "robot",
+              "operator": "=~",
+              "value": "/^$robot_name$/"
+            },
+            {
+              "condition": "AND",
+              "key": "name",
+              "operator": "=",
+              "value": "orientation"
+            }
+          ]
+        },
+        {
+          "alias": "$col",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "cdkjdesjtx1q8b"
+          },
+          "dsType": "influxdb",
+          "groupBy": [
+            {
+              "params": [
+                "20ms"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "ramp_vitesse",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "from(bucket: \"robots\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"ramp_vitesse\")\n  |> filter(fn: (r) => r[\"robot\"] == \"${robot_name}\")\n  |> filter(fn: (r) => r[\"name\"] == \"orientation\")\n  |> filter(fn: (r) => r[\"_field\"] == \"consigne\")\n  |> map(fn: (r) => ({ _time: r._time, _value: r._value * -1.0 }))\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> rename(columns: { _value: \"consigne_neg\" })\n  |> keep(columns: [\"_time\", \"consigne_neg\"])",
+          "refId": "C",
           "resultFormat": "time_series",
           "select": [
             [
@@ -1254,19 +1850,23 @@
           ]
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Orientation : Vitesse théorique",
       "type": "timeseries"
     },
     {
-      "datasource": "influxdb-robots",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "cdkjdesjtx1q8b"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -1278,6 +1878,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -1311,7 +1912,38 @@
           },
           "unit": "short"
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "distanceDeceleration"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "input"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 8,
@@ -1320,7 +1952,6 @@
         "y": 41
       },
       "id": 3,
-      "links": [],
       "options": {
         "legend": {
           "calcs": [
@@ -1329,16 +1960,22 @@
             "min"
           ],
           "displayMode": "table",
-          "placement": "bottom"
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "pluginVersion": "8.1.6",
       "targets": [
         {
           "alias": "$col",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "cdkjdesjtx1q8b"
+          },
           "dsType": "influxdb",
           "groupBy": [
             {
@@ -1351,6 +1988,7 @@
           "measurement": "ramp_vitesse",
           "orderByTime": "ASC",
           "policy": "default",
+          "query": "from(bucket: \"robots\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"ramp_vitesse\")\n  |> filter(fn: (r) => r[\"robot\"] == \"${robot_name}\")\n  |> filter(fn: (r) => r[\"name\"] == \"distance\")\n  |> filter(fn: (r) => r[\"_field\"] == \"input\" or r[\"_field\"] == \"distanceDeceleration\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> keep(columns: [\"_time\", \"_field\", \"_value\"])",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -1406,19 +2044,23 @@
           ]
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Distance : Consigne, Deceleration",
       "type": "timeseries"
     },
     {
-      "datasource": "influxdb-robots",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "cdkjdesjtx1q8b"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -1430,6 +2072,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -1463,7 +2106,38 @@
           },
           "unit": "short"
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "distanceDeceleration"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "input"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 8,
@@ -1472,7 +2146,6 @@
         "y": 41
       },
       "id": 34,
-      "links": [],
       "options": {
         "legend": {
           "calcs": [
@@ -1481,16 +2154,22 @@
             "min"
           ],
           "displayMode": "table",
-          "placement": "bottom"
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "pluginVersion": "8.1.6",
       "targets": [
         {
           "alias": "$col",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "cdkjdesjtx1q8b"
+          },
           "dsType": "influxdb",
           "groupBy": [
             {
@@ -1503,6 +2182,7 @@
           "measurement": "ramp_vitesse",
           "orderByTime": "ASC",
           "policy": "default",
+          "query": "from(bucket: \"robots\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"ramp_vitesse\")\n  |> filter(fn: (r) => r[\"robot\"] == \"${robot_name}\")\n  |> filter(fn: (r) => r[\"name\"] == \"orientation\")\n  |> filter(fn: (r) => r[\"_field\"] == \"input\" or r[\"_field\"] == \"distanceDeceleration\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> keep(columns: [\"_time\", \"_field\", \"_value\"])",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -1558,17 +2238,14 @@
           ]
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Orientation : Consigne, Deceleration",
       "type": "timeseries"
     },
     {
       "collapsed": false,
-      "datasource": null,
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
+      "datasource": {
+        "type": "influxdb",
+        "uid": "adkjdeslru7eoa"
       },
       "gridPos": {
         "h": 1,
@@ -1579,8 +2256,10 @@
       "id": 18,
       "panels": [
         {
-          "cacheTimeout": null,
-          "datasource": "influxdb-robots",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "adkjdeslru7eoa"
+          },
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -1602,8 +2281,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -1622,7 +2300,6 @@
             "y": 36
           },
           "id": 7,
-          "interval": null,
           "links": [],
           "maxDataPoints": 100,
           "options": {
@@ -1643,6 +2320,10 @@
           "pluginVersion": "8.1.6",
           "targets": [
             {
+              "datasource": {
+                "type": "influxdb",
+                "uid": "adkjdeslru7eoa"
+              },
               "dsType": "influxdb",
               "groupBy": [],
               "measurement": "correcteur_pid",
@@ -1679,8 +2360,10 @@
           "type": "stat"
         },
         {
-          "cacheTimeout": null,
-          "datasource": "influxdb-robots",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "adkjdeslru7eoa"
+          },
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -1702,8 +2385,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -1722,7 +2404,6 @@
             "y": 36
           },
           "id": 8,
-          "interval": null,
           "links": [],
           "maxDataPoints": 100,
           "options": {
@@ -1743,6 +2424,10 @@
           "pluginVersion": "8.1.6",
           "targets": [
             {
+              "datasource": {
+                "type": "influxdb",
+                "uid": "adkjdeslru7eoa"
+              },
               "dsType": "influxdb",
               "groupBy": [],
               "measurement": "correcteur_pid",
@@ -1779,8 +2464,10 @@
           "type": "stat"
         },
         {
-          "cacheTimeout": null,
-          "datasource": "influxdb-robots",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "adkjdeslru7eoa"
+          },
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -1802,8 +2489,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -1822,7 +2508,6 @@
             "y": 36
           },
           "id": 9,
-          "interval": null,
           "links": [],
           "maxDataPoints": 100,
           "options": {
@@ -1843,6 +2528,10 @@
           "pluginVersion": "8.1.6",
           "targets": [
             {
+              "datasource": {
+                "type": "influxdb",
+                "uid": "adkjdeslru7eoa"
+              },
               "dsType": "influxdb",
               "groupBy": [],
               "measurement": "correcteur_pid",
@@ -1879,8 +2568,10 @@
           "type": "stat"
         },
         {
-          "cacheTimeout": null,
-          "datasource": "influxdb-robots",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "adkjdeslru7eoa"
+          },
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -1902,8 +2593,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -1922,7 +2612,6 @@
             "y": 36
           },
           "id": 10,
-          "interval": null,
           "links": [],
           "maxDataPoints": 100,
           "options": {
@@ -1943,6 +2632,10 @@
           "pluginVersion": "8.1.6",
           "targets": [
             {
+              "datasource": {
+                "type": "influxdb",
+                "uid": "adkjdeslru7eoa"
+              },
               "dsType": "influxdb",
               "groupBy": [],
               "measurement": "correcteur_pid",
@@ -1979,8 +2672,10 @@
           "type": "stat"
         },
         {
-          "cacheTimeout": null,
-          "datasource": "influxdb-robots",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "adkjdeslru7eoa"
+          },
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -2002,8 +2697,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -2022,7 +2716,6 @@
             "y": 36
           },
           "id": 11,
-          "interval": null,
           "links": [],
           "maxDataPoints": 100,
           "options": {
@@ -2043,6 +2736,10 @@
           "pluginVersion": "8.1.6",
           "targets": [
             {
+              "datasource": {
+                "type": "influxdb",
+                "uid": "adkjdeslru7eoa"
+              },
               "dsType": "influxdb",
               "groupBy": [],
               "measurement": "correcteur_pid",
@@ -2079,8 +2776,10 @@
           "type": "stat"
         },
         {
-          "cacheTimeout": null,
-          "datasource": "influxdb-robots",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "adkjdeslru7eoa"
+          },
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -2102,8 +2801,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -2122,7 +2820,6 @@
             "y": 36
           },
           "id": 12,
-          "interval": null,
           "links": [],
           "maxDataPoints": 100,
           "options": {
@@ -2143,6 +2840,10 @@
           "pluginVersion": "8.1.6",
           "targets": [
             {
+              "datasource": {
+                "type": "influxdb",
+                "uid": "adkjdeslru7eoa"
+              },
               "dsType": "influxdb",
               "groupBy": [],
               "measurement": "correcteur_pid",
@@ -2183,7 +2884,10 @@
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "influxdb-robots",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "adkjdeslru7eoa"
+          },
           "fieldConfig": {
             "defaults": {
               "custom": {}
@@ -2229,6 +2933,10 @@
           "targets": [
             {
               "alias": "$col",
+              "datasource": {
+                "type": "influxdb",
+                "uid": "adkjdeslru7eoa"
+              },
               "dsType": "influxdb",
               "groupBy": [
                 {
@@ -2303,9 +3011,7 @@
             }
           ],
           "thresholds": [],
-          "timeFrom": null,
           "timeRegions": [],
-          "timeShift": null,
           "title": "Distance : Consigne, Mesure",
           "tooltip": {
             "shared": true,
@@ -2314,33 +3020,24 @@
           },
           "type": "graph",
           "xaxis": {
-            "buckets": null,
             "mode": "time",
-            "name": null,
             "show": true,
             "values": []
           },
           "yaxes": [
             {
               "format": "short",
-              "label": null,
               "logBase": 1,
-              "max": null,
-              "min": null,
               "show": true
             },
             {
               "format": "short",
-              "label": null,
               "logBase": 1,
-              "max": null,
-              "min": null,
               "show": true
             }
           ],
           "yaxis": {
-            "align": false,
-            "alignLevel": null
+            "align": false
           }
         },
         {
@@ -2348,7 +3045,10 @@
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "influxdb-robots",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "adkjdeslru7eoa"
+          },
           "fieldConfig": {
             "defaults": {
               "custom": {}
@@ -2394,6 +3094,10 @@
           "targets": [
             {
               "alias": "$col",
+              "datasource": {
+                "type": "influxdb",
+                "uid": "adkjdeslru7eoa"
+              },
               "dsType": "influxdb",
               "groupBy": [
                 {
@@ -2468,9 +3172,7 @@
             }
           ],
           "thresholds": [],
-          "timeFrom": null,
           "timeRegions": [],
-          "timeShift": null,
           "title": "Orientation : Consigne, Mesure",
           "tooltip": {
             "shared": true,
@@ -2479,33 +3181,24 @@
           },
           "type": "graph",
           "xaxis": {
-            "buckets": null,
             "mode": "time",
-            "name": null,
             "show": true,
             "values": []
           },
           "yaxes": [
             {
               "format": "short",
-              "label": null,
               "logBase": 1,
-              "max": null,
-              "min": null,
               "show": true
             },
             {
               "format": "short",
-              "label": null,
               "logBase": 1,
-              "max": null,
-              "min": null,
               "show": true
             }
           ],
           "yaxis": {
-            "align": false,
-            "alignLevel": null
+            "align": false
           }
         },
         {
@@ -2513,7 +3206,10 @@
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "influxdb-robots",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "adkjdeslru7eoa"
+          },
           "fieldConfig": {
             "defaults": {
               "custom": {}
@@ -2530,7 +3226,7 @@
           },
           "height": "300",
           "hiddenSeries": false,
-          "id": 34,
+          "id": 45,
           "legend": {
             "alignAsTable": true,
             "avg": true,
@@ -2559,6 +3255,10 @@
           "targets": [
             {
               "alias": "$col",
+              "datasource": {
+                "type": "influxdb",
+                "uid": "adkjdeslru7eoa"
+              },
               "dsType": "influxdb",
               "groupBy": [
                 {
@@ -2663,9 +3363,7 @@
             }
           ],
           "thresholds": [],
-          "timeFrom": null,
           "timeRegions": [],
-          "timeShift": null,
           "title": "Distance : P I D",
           "tooltip": {
             "shared": true,
@@ -2674,33 +3372,24 @@
           },
           "type": "graph",
           "xaxis": {
-            "buckets": null,
             "mode": "time",
-            "name": null,
             "show": true,
             "values": []
           },
           "yaxes": [
             {
               "format": "short",
-              "label": null,
               "logBase": 1,
-              "max": null,
-              "min": null,
               "show": true
             },
             {
               "format": "short",
-              "label": null,
               "logBase": 1,
-              "max": null,
-              "min": null,
               "show": true
             }
           ],
           "yaxis": {
-            "align": false,
-            "alignLevel": null
+            "align": false
           }
         },
         {
@@ -2708,7 +3397,10 @@
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "influxdb-robots",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "adkjdeslru7eoa"
+          },
           "fieldConfig": {
             "defaults": {
               "custom": {}
@@ -2754,6 +3446,10 @@
           "targets": [
             {
               "alias": "$col",
+              "datasource": {
+                "type": "influxdb",
+                "uid": "adkjdeslru7eoa"
+              },
               "dsType": "influxdb",
               "groupBy": [
                 {
@@ -2858,9 +3554,7 @@
             }
           ],
           "thresholds": [],
-          "timeFrom": null,
           "timeRegions": [],
-          "timeShift": null,
           "title": "Orientation : P I D",
           "tooltip": {
             "shared": true,
@@ -2869,42 +3563,44 @@
           },
           "type": "graph",
           "xaxis": {
-            "buckets": null,
             "mode": "time",
-            "name": null,
             "show": true,
             "values": []
           },
           "yaxes": [
             {
               "format": "short",
-              "label": null,
               "logBase": 1,
-              "max": null,
-              "min": null,
               "show": true
             },
             {
               "format": "short",
-              "label": null,
               "logBase": 1,
-              "max": null,
-              "min": null,
               "show": true
             }
           ],
           "yaxis": {
-            "align": false,
-            "alignLevel": null
+            "align": false
           }
         }
       ],
-      "repeat": null,
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "adkjdeslru7eoa"
+          },
+          "refId": "A"
+        }
+      ],
       "title": "Correcteur PID Distance / Orientation",
       "type": "row"
     },
     {
-      "datasource": null,
+      "datasource": {
+        "type": "influxdb",
+        "uid": "cdkjdesjtx1q8b"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -2937,7 +3633,7 @@
       "id": 37,
       "options": {
         "colorMode": "value",
-        "graphMode": "none",
+        "graphMode": "area",
         "justifyMode": "auto",
         "orientation": "auto",
         "reduceOptions": {
@@ -2947,16 +3643,23 @@
           "fields": "",
           "values": false
         },
+        "showPercentChange": false,
         "text": {},
-        "textMode": "auto"
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "8.1.6",
+      "pluginVersion": "10.4.1",
       "targets": [
         {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "cdkjdesjtx1q8b"
+          },
           "groupBy": [],
           "measurement": "correcteur_pid",
           "orderByTime": "ASC",
           "policy": "default",
+          "query": "from(bucket: \"robots\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"correcteur_pid\")\n  |> filter(fn: (r) => r[\"robot\"] == \"${robot_name}\")\n  |> filter(fn: (r) => r[\"name\"] == \"distance\")\n  |> filter(fn: (r) => r[\"_field\"] == \"kp\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -2988,7 +3691,10 @@
       "type": "stat"
     },
     {
-      "datasource": null,
+      "datasource": {
+        "type": "influxdb",
+        "uid": "cdkjdesjtx1q8b"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -3020,7 +3726,7 @@
       "id": 38,
       "options": {
         "colorMode": "value",
-        "graphMode": "none",
+        "graphMode": "area",
         "justifyMode": "auto",
         "orientation": "auto",
         "reduceOptions": {
@@ -3030,16 +3736,23 @@
           "fields": "",
           "values": false
         },
+        "showPercentChange": false,
         "text": {},
-        "textMode": "auto"
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "8.1.6",
+      "pluginVersion": "10.4.1",
       "targets": [
         {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "cdkjdesjtx1q8b"
+          },
           "groupBy": [],
           "measurement": "correcteur_pid",
           "orderByTime": "ASC",
           "policy": "default",
+          "query": "from(bucket: \"robots\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"correcteur_pid\")\n  |> filter(fn: (r) => r[\"robot\"] == \"${robot_name}\")\n  |> filter(fn: (r) => r[\"name\"] == \"distance\")\n  |> filter(fn: (r) => r[\"_field\"] == \"ki\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -3071,7 +3784,10 @@
       "type": "stat"
     },
     {
-      "datasource": null,
+      "datasource": {
+        "type": "influxdb",
+        "uid": "cdkjdesjtx1q8b"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -3103,7 +3819,7 @@
       "id": 39,
       "options": {
         "colorMode": "value",
-        "graphMode": "none",
+        "graphMode": "area",
         "justifyMode": "auto",
         "orientation": "auto",
         "reduceOptions": {
@@ -3113,16 +3829,23 @@
           "fields": "",
           "values": false
         },
+        "showPercentChange": false,
         "text": {},
-        "textMode": "auto"
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "8.1.6",
+      "pluginVersion": "10.4.1",
       "targets": [
         {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "cdkjdesjtx1q8b"
+          },
           "groupBy": [],
           "measurement": "correcteur_pid",
           "orderByTime": "ASC",
           "policy": "default",
+          "query": "from(bucket: \"robots\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"correcteur_pid\")\n  |> filter(fn: (r) => r[\"robot\"] == \"${robot_name}\")\n  |> filter(fn: (r) => r[\"name\"] == \"distance\")\n  |> filter(fn: (r) => r[\"_field\"] == \"kd\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -3154,7 +3877,10 @@
       "type": "stat"
     },
     {
-      "datasource": null,
+      "datasource": {
+        "type": "influxdb",
+        "uid": "cdkjdesjtx1q8b"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -3186,7 +3912,7 @@
       "id": 40,
       "options": {
         "colorMode": "value",
-        "graphMode": "none",
+        "graphMode": "area",
         "justifyMode": "auto",
         "orientation": "auto",
         "reduceOptions": {
@@ -3196,16 +3922,23 @@
           "fields": "",
           "values": false
         },
+        "showPercentChange": false,
         "text": {},
-        "textMode": "auto"
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "8.1.6",
+      "pluginVersion": "10.4.1",
       "targets": [
         {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "cdkjdesjtx1q8b"
+          },
           "groupBy": [],
           "measurement": "correcteur_pid",
           "orderByTime": "ASC",
           "policy": "default",
+          "query": "from(bucket: \"robots\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"correcteur_pid\")\n  |> filter(fn: (r) => r[\"robot\"] == \"${robot_name}\")\n  |> filter(fn: (r) => r[\"name\"] == \"orientation\")\n  |> filter(fn: (r) => r[\"_field\"] == \"kp\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -3237,7 +3970,10 @@
       "type": "stat"
     },
     {
-      "datasource": null,
+      "datasource": {
+        "type": "influxdb",
+        "uid": "cdkjdesjtx1q8b"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -3269,7 +4005,7 @@
       "id": 41,
       "options": {
         "colorMode": "value",
-        "graphMode": "none",
+        "graphMode": "area",
         "justifyMode": "auto",
         "orientation": "auto",
         "reduceOptions": {
@@ -3279,16 +4015,23 @@
           "fields": "",
           "values": false
         },
+        "showPercentChange": false,
         "text": {},
-        "textMode": "auto"
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "8.1.6",
+      "pluginVersion": "10.4.1",
       "targets": [
         {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "cdkjdesjtx1q8b"
+          },
           "groupBy": [],
           "measurement": "correcteur_pid",
           "orderByTime": "ASC",
           "policy": "default",
+          "query": "from(bucket: \"robots\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"correcteur_pid\")\n  |> filter(fn: (r) => r[\"robot\"] == \"${robot_name}\")\n  |> filter(fn: (r) => r[\"name\"] == \"orientation\")\n  |> filter(fn: (r) => r[\"_field\"] == \"ki\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -3320,7 +4063,10 @@
       "type": "stat"
     },
     {
-      "datasource": null,
+      "datasource": {
+        "type": "influxdb",
+        "uid": "cdkjdesjtx1q8b"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -3352,7 +4098,7 @@
       "id": 42,
       "options": {
         "colorMode": "value",
-        "graphMode": "none",
+        "graphMode": "area",
         "justifyMode": "auto",
         "orientation": "auto",
         "reduceOptions": {
@@ -3362,16 +4108,23 @@
           "fields": "",
           "values": false
         },
+        "showPercentChange": false,
         "text": {},
-        "textMode": "auto"
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "8.1.6",
+      "pluginVersion": "10.4.1",
       "targets": [
         {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "cdkjdesjtx1q8b"
+          },
           "groupBy": [],
           "measurement": "correcteur_pid",
           "orderByTime": "ASC",
           "policy": "default",
+          "query": "from(bucket: \"robots\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"correcteur_pid\")\n  |> filter(fn: (r) => r[\"robot\"] == \"${robot_name}\")\n  |> filter(fn: (r) => r[\"name\"] == \"orientation\")\n  |> filter(fn: (r) => r[\"_field\"] == \"kd\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -3403,13 +4156,19 @@
       "type": "stat"
     },
     {
-      "datasource": "influxdb-robots",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "cdkjdesjtx1q8b"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -3421,6 +4180,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -3454,7 +4214,53 @@
           },
           "unit": "short"
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "consigne"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "input"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "output"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 9,
@@ -3463,7 +4269,6 @@
         "y": 53
       },
       "id": 4,
-      "links": [],
       "options": {
         "legend": {
           "calcs": [
@@ -3472,21 +4277,28 @@
             "min"
           ],
           "displayMode": "table",
-          "placement": "bottom"
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "pluginVersion": "8.1.6",
       "targets": [
         {
           "alias": "$col",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "cdkjdesjtx1q8b"
+          },
           "dsType": "influxdb",
           "groupBy": [],
           "measurement": "correcteur_pid",
           "orderByTime": "ASC",
           "policy": "default",
+          "query": "from(bucket: \"robots\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"correcteur_pid\")\n  |> filter(fn: (r) => r[\"robot\"] == \"${robot_name}\")\n  |> filter(fn: (r) => r[\"name\"] == \"distance\")\n  |> filter(fn: (r) => r[\"_field\"] == \"consigne\" or r[\"_field\"] == \"input\" or r[\"_field\"] == \"output\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> keep(columns: [\"_time\", \"_field\", \"_value\"])",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -3548,19 +4360,23 @@
           ]
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Distance",
       "type": "timeseries"
     },
     {
-      "datasource": "influxdb-robots",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "cdkjdesjtx1q8b"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -3572,6 +4388,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -3605,7 +4422,53 @@
           },
           "unit": "short"
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "consigne"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "input"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "output"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 9,
@@ -3613,8 +4476,7 @@
         "x": 12,
         "y": 53
       },
-      "id": 35,
-      "links": [],
+      "id": 46,
       "options": {
         "legend": {
           "calcs": [
@@ -3623,21 +4485,28 @@
             "min"
           ],
           "displayMode": "table",
-          "placement": "bottom"
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "pluginVersion": "8.1.6",
       "targets": [
         {
           "alias": "$col",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "cdkjdesjtx1q8b"
+          },
           "dsType": "influxdb",
           "groupBy": [],
           "measurement": "correcteur_pid",
           "orderByTime": "ASC",
           "policy": "default",
+          "query": "from(bucket: \"robots\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"correcteur_pid\")\n  |> filter(fn: (r) => r[\"robot\"] == \"${robot_name}\")\n  |> filter(fn: (r) => r[\"name\"] == \"orientation\")\n  |> filter(fn: (r) => r[\"_field\"] == \"consigne\" or r[\"_field\"] == \"input\" or r[\"_field\"] == \"output\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> keep(columns: [\"_time\", \"_field\", \"_value\"])",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -3699,36 +4568,33 @@
           ]
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Orientation",
       "type": "timeseries"
     }
   ],
-  "refresh": "10s",
-  "schemaVersion": 30,
-  "style": "dark",
+  "refresh": "",
+  "schemaVersion": 39,
   "tags": [],
   "templating": {
     "list": [
       {
-        "allValue": null,
         "current": {
           "selected": false,
           "text": "Nerell",
           "value": "Nerell"
         },
-        "datasource": "influxdb-robots",
-        "definition": "",
-        "description": null,
-        "error": null,
+        "datasource": {
+          "type": "influxdb",
+          "uid": "cdkjdesjtx1q8b"
+        },
+        "definition": "import \"influxdata/influxdb/v1\"\nv1.tagValues(\n    bucket: \"robots\",\n    tag: \"robot\",\n    predicate: (r) => true,\n    start: -1d\n)",
         "hide": 0,
         "includeAll": false,
         "label": "Nom du robot",
         "multi": false,
         "name": "robot_name",
         "options": [],
-        "query": "SHOW TAG VALUES ON \"robots\" FROM \"correcteur_pid\" WITH KEY = \"robot\"",
+        "query": "import \"influxdata/influxdb/v1\"\nv1.tagValues(\n    bucket: \"robots\",\n    tag: \"robot\",\n    predicate: (r) => true,\n    start: -1d\n)",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
