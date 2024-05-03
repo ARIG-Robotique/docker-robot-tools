@@ -143,12 +143,13 @@ services:
       - reader-logs:/logs
       - ../../java/robots/nerell-parent/nerell-simulator/logs:/logs-simulateur/nerell
       - ../../java/robots/odin-parent/odin-simulator/logs:/logs-simulateur/odin
-      - $SSH_AUTH_SOCK:/ssh-agent
+      #- $SSH_AUTH_SOCK:/ssh-agent
+      - $HOME/.ssh/robots:/root/.ssh/id_rsa
     environment:
       SSH_AUTH_SOCK: /ssh-agent
     extra_hosts:
       - "nerell:${NERELL_IP}"
-      - "odin:${ODIN_IP}"
+      #- "odin:${ODIN_IP}"
       - "pami-triangle:${PAMI_TRIANGLE_IP}"
       - "pami-carre:${PAMI_CARRE_IP}"
       - "pami-rond:${PAMI_ROND_IP}"
