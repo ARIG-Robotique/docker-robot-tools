@@ -143,8 +143,7 @@ services:
       - reader-logs:/logs
       - ../../java/robots/nerell-parent/nerell-simulator/logs:/logs-simulateur/nerell
       - ../../java/robots/odin-parent/odin-simulator/logs:/logs-simulateur/odin
-      #- $SSH_AUTH_SOCK:/ssh-agent
-      - $HOME/.ssh/robots:/root/.ssh/id_rsa
+      - $SSH_AUTH_SOCK:/ssh-agent
     environment:
       SSH_AUTH_SOCK: /ssh-agent
     extra_hosts:
