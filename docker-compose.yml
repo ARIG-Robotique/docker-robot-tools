@@ -1,5 +1,3 @@
-version: "3.8"
-
 networks:
   arig.org:
     name: arig.org
