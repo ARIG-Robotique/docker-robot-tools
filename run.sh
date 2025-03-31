@@ -80,9 +80,6 @@ function checkBinaries {
   docker version > /dev/null || logErrorAndExit "Docker doit être installé" 1
   logInfo " * docker : [${LGREEN}OK${RESTORE}]"
 
-  docker-compose version > /dev/null || logErrorAndExit "Docker compose doit être installé" 2
-  logInfo " * docker-compose : [${LGREEN}OK${RESTORE}]"
-
   terraform version > /dev/null || logErrorAndExit "Terraform doit être installé" 3
   logInfo " * terraform : [${LGREEN}OK${RESTORE}]"
 
@@ -92,7 +89,7 @@ function checkBinaries {
   docker version
 
   logInfo " * Docker compose ..."
-  docker-compose version
+  docker compose version
 
   logInfo " * Terraform ..."
   TF_REQUIRED="v1.0.3"
@@ -126,8 +123,7 @@ logInfo " * host   : ${SSH_AUTH_SOCK}"
 logInfo " * docker : ${SSH_AUTH_SOCK_DEFINED}"
 
 if [ "$1" == "start" ] ; then
-  which sglk-run && sglk-run stop --force
-  which sglk-dev-stack && sglk-dev-stack stop
+  which sglk && sglk dev stack stop
 
   # Démarrage infra docker
   f="-f docker-compose.yml"
@@ -136,8 +132,8 @@ if [ "$1" == "start" ] ; then
     f+=" -f docker-compose.local.yml"
   fi
 
-  eval "docker-compose ${f} pull"
-  eval "docker-compose ${f} up --detach"
+  eval "docker compose ${f} pull"
+  eval "docker compose ${f} up --detach"
 
   # Provision de l'infra terraform
   cd infrastructure
@@ -162,7 +158,7 @@ if [ "$1" == "start" ] ; then
 
 elif [ "$1" == "stop" ] ; then
   # Arret infra docker
-  docker-compose stop
+  docker compose stop
 
 elif [ "$1" == "destroy" ] ; then
   # Destruction infra
@@ -175,7 +171,7 @@ elif [ "$1" == "destroy" ] ; then
 
   # Arret infra docker
   logInfo "Destruction docker ..."
-  docker-compose down --remove-orphans --volumes
+  docker compose down --remove-orphans --volumes
 
 else
   printUsage
