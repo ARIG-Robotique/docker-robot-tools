@@ -145,17 +145,6 @@ services:
     environment:
       SSH_AUTH_SOCK: /ssh-agent
 
-  shell:
-    container_name: shell.arig.org
-    image: fedora:latest
-    command: sleep 300
-    networks:
-      - arig.org
-    volumes:
-      - $SSH_AUTH_SOCK_DEFINED:/ssh-agent
-    environment:
-      SSH_AUTH_SOCK: /ssh-agent
-
   superviseur:
     container_name: superviseur.arig.org
     image: ghcr.io/arig-robotique/robots-supervisor-private:latest
