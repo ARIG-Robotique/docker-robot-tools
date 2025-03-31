@@ -23,7 +23,7 @@ volumes:
 services:
   traefik:
     container_name: traefik.arig.org
-    image: traefik:v2.11.0
+    image: traefik:v3.3
     restart: unless-stopped
     networks:
       arig.org:
