@@ -6,6 +6,7 @@ provider "registry.terraform.io/cyrilgdn/postgresql" {
   constraints = "1.22.0"
   hashes = [
     "h1:8jjuILf07SZmfJjKsjEAlu5125pyRy4sSEJ+y68N7FU=",
+    "h1:zQQKupK4vbHP90ESdqSdVVAXvI+cS2g9lE6DlUJ38+s=",
     "zh:038df91e31bda2a9a1f33adc886bc2084793e151130e29909b92f18b91315724",
     "zh:093328afc09cf13a5aed64daf9dc32d764e0a2b3c626c532e211fc22c08088f3",
     "zh:108ae8321312085037b987bbe0a4a8e8aa34a763b5b73ad6d9a78d605fa8074d",
@@ -27,6 +28,7 @@ provider "registry.terraform.io/grafana/grafana" {
   version     = "2.15.0"
   constraints = "2.15.0"
   hashes = [
+    "h1:6AUe5xUKZ03SQpwY+IcuzhK1U+LGcZ+W2bFmbBxe4jM=",
     "h1:B2QuLhkTfoKBWy63KIokrs1wX1JddfUl10PkhIyiunI=",
     "zh:01c5c744409353c1fe0b095aedad21ccfb269e1b2b9fa31664d0e818bb41a818",
     "zh:1499a68faf7ef6f7d10a49dc42ecbd675f5ab07d0fb760489333a1ff9724ac4e",
